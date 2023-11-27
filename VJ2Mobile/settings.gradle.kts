@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SnorLacksApp"
+rootProject.name = "VJ2Mobile"
 include(":app")
  
