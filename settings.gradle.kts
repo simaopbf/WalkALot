@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "WalkALot"
+rootProject.name = "ActualLayout"
 include(":app")
  
