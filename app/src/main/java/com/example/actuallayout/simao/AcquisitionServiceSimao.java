@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
 public class AcquisitionService extends Service {
 
     private static final String TAG = "AcquisitionService";
@@ -409,7 +410,7 @@ public class AcquisitionService extends Service {
         stopSelf();
     }
 
-    /* ---------------------------------------------------------- Data processing ----------------------------------------------------------------------*/
+    /* ---------------------------------------------------------- Data processing ---------------------------------------------------------------------- */
 
     private void stepCounter() {
 
@@ -517,3 +518,4 @@ public class AcquisitionService extends Service {
         }
     }
 }
+
