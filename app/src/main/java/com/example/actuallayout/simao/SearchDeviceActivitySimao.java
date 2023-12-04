@@ -21,7 +21,7 @@ import com.example.actuallayout.R;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class SearchDeviceActivity extends AppCompatActivity {
+public class SearchDeviceActivitySimao extends AppCompatActivity {
 
     private static final String TAG = "SearchDeviceActivity";
 
@@ -50,7 +50,7 @@ public class SearchDeviceActivity extends AppCompatActivity {
             }
 
             private void goToResults() {
-                Intent resultAct = new Intent(getApplicationContext(), ResultsActivity.class);
+                Intent resultAct = new Intent(getApplicationContext(), ResultsActivitySimao.class);
                 startActivity(resultAct);
 
                 Toast.makeText(getApplicationContext(), "StepNCount loading... ", Toast.LENGTH_SHORT).show();

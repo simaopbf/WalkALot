@@ -14,7 +14,7 @@ import androidx.constraintlayout.widget.Guideline;
 
 import com.example.actuallayout.R;
 
-public class ConfigActivity extends AppCompatActivity {
+public class ConfigActivitySimao extends AppCompatActivity {
 
     /* ------------------------------- Shared preferences  ------------------------------- */
 
@@ -48,7 +48,7 @@ public class ConfigActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_config);
+        setContentView(R.layout.fragment_goals);
 
         SharedPreferences configPreferences = getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE); // Mode private means no other app can use the saved data
         SharedPreferences.Editor editor = configPreferences.edit();
@@ -182,7 +182,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     public void gotoMain(){
-        Intent i = new Intent(ConfigActivity.this, MainActivity.class);
+        Intent i = new Intent(ConfigActivitySimao.this, MainActivity.class);
         i.putExtra("Debugging", "Working");
         startActivity(i);
     }

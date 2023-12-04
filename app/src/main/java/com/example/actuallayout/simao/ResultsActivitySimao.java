@@ -1,5 +1,13 @@
 package com.example.actuallayout.simao;
 
+import static com.example.actuallayout.simao.GoalsActivity.CAL_GOAL;
+import static com.example.actuallayout.simao.GoalsActivity.DIST_GOAL;
+import static com.example.actuallayout.simao.GoalsActivity.DIST_GOAL_U;
+import static com.example.actuallayout.simao.GoalsActivity.GOALS_PREFS;
+import static com.example.actuallayout.simao.GoalsActivity.STEPS_GOAL;
+import static com.example.actuallayout.simao.GoalsActivity.TIME_GOAL;
+import static com.example.actuallayout.simao.GoalsActivity.TIME_GOAL_U;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +31,14 @@ import com.example.actuallayout.R;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class ResultsActivity extends AppCompatActivity {
+/*import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;*/
+
+
+public class ResultsActivitySimao extends AppCompatActivity {
 
     private static final String TAG = "Results";
     private final Handler acquisition = new Handler();
@@ -72,7 +87,7 @@ public class ResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        setContentView(R.layout.fragment_results);
         df = new DecimalFormat("#.#");
 
         batteryView = findViewById(R.id.battery);
@@ -228,7 +243,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         Button configButton = findViewById(R.id.configBtn);
         configButton.setOnClickListener(view -> {
-            Intent openConfig = new Intent(getApplicationContext(), ConfigActivity.class);
+            Intent openConfig = new Intent(getApplicationContext(), ConfigActivitySimao.class);
             startActivity(openConfig);
 
         });

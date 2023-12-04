@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <NumberPicker
+        android:id="@+id/heightPick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginTop="8dp"
+        android:theme="@style/NumPicker"
+        app:layout_constraintEnd_toEndOf="@+id/heightTxt"
+        app:layout_constraintStart_toStartOf="@+id/heightTxt"
+        app:layout_constraintTop_toBottomOf="@+id/heightTxt" />
+
+    <NumberPicker
+        android:id="@+id/birthPick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginTop="8dp"
+        android:theme="@style/NumPicker"
+        app:layout_constraintEnd_toEndOf="@+id/birthTxt"
+        app:layout_constraintStart_toStartOf="@+id/birthTxt"
+        app:layout_constraintTop_toBottomOf="@+id/birthTxt" />
+
+    <NumberPicker
+        android:id="@+id/weightPick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginTop="8dp"
+        android:theme="@style/NumPicker"
+        app:layout_constraintEnd_toEndOf="@+id/weightTxt"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="@+id/weightTxt"
+        app:layout_constraintTop_toBottomOf="@+id/weightTxt" />
+
+    <TextView
+        android:id="@+id/weightTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:drawableTop="@drawable/weight_icon"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="Weight (Kg)"
+        android:textColor="@color/Text"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="0.501" />
+
+    <TextView
+        android:id="@+id/birthTxt"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:drawableTop="@drawable/ageicon"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="Age (years)"
+        android:textColor="@color/Text"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="0.501" />
+
+    <TextView
+        android:id="@+id/heightTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:drawableTop="@drawable/height_icon"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="Height (cm)"
+        android:textColor="@color/Text"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="0.501" />
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/Pickr"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline6"
+        app:layout_constraintStart_toStartOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/birthPick" />
+
+    <NumberPicker
+        android:id="@+id/genderPick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginEnd="24dp"
+        android:theme="@style/NumPicker"
+        app:layout_constraintBottom_toBottomOf="@+id/genderTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/genderTxt"
+        app:layout_constraintTop_toTopOf="@+id/genderTxt" />
+
+    <TextView
+        android:id="@+id/genderTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:drawableLeft="@drawable/gender_icon"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:text="@string/tv_gender"
+        android:textColor="@color/Text"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/birthTxt"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableBottom="@drawable/userinfo"
+        android:drawablePadding="20dp"
+        android:gravity="center"
+        android:text="User information"
+        android:textColor="@color/Text"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Settings Fragment"
+        android:textColor="#FAF8F8"
+        android:textSize="26dp"
+        tools:text="Settings Fragment" />
+
+
+</FrameLayout>

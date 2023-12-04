@@ -1,5 +1,10 @@
 package com.example.actuallayout.simao;
 
+//import static android.os.Build.VERSION_CODES.R;
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+import static com.example.actuallayout.simao.ConfigActivitySimao.CONFIG_PREFS;
+import com.example.actuallayout.R;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -12,13 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.example.actuallayout.R;
 
-import com.example.actuallayout.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
-    ActivityMainBinding binding;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -38,15 +39,15 @@ public class MainActivity extends AppCompatActivity {
             // Checks if it is the first time the user opens the app
             // If so, the user sets the Config inputs
 
-            Intent configAct = new Intent(getApplicationContext(), ConfigActivity.class);
+            Intent configAct = new Intent(getApplicationContext(), ConfigActivitySimao.class);
             startActivity(configAct);
         } else {
             if (isRunning) {
-                Intent resultAct = new Intent(getApplicationContext(), ResultsActivity.class);
+                Intent resultAct = new Intent(getApplicationContext(), ResultsActivitySimao.class);
                 startActivity(resultAct);
                 Log.d(TAG, "onCreate: ###################################################### Service is running! ######################################################");
             } else {
-                Intent searchAct = new Intent(getApplicationContext(), SearchDeviceActivity.class);
+                Intent searchAct = new Intent(getApplicationContext(), SearchDeviceActivitySimao.class);
                 startActivity(searchAct);
                 Log.d(TAG, "onCreate: ###################################################### Service is not running! ######################################################");
             }
@@ -69,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        /* binding = ActivityMainBinding.inflate(getLayoutInflater());
+        /*  ActivityMainBinding binding;
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {

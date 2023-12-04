@@ -399,7 +399,7 @@ public class AcquisitionService extends Service {
         if(dataACC != null) {
             adddata();
         }
-        Intent searchAct = new Intent(getApplicationContext(), SearchDeviceActivity.class);
+        Intent searchAct = new Intent(getApplicationContext(), SearchDeviceActivitySimao.class);
         searchAct.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(searchAct);
 
