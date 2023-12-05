@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
+    style="@style/Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsFragment">
+    android:layout_weight="@dimen/material_emphasis_medium"
+    android:orientation="vertical"
+    tools:context=".ConfigActivitySimao"> <!-- To change ColorScheme access themes.xml -->
+
 
     <!-- TODO: Update blank fragment layout -->
     <NumberPicker
@@ -144,14 +149,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Settings Fragment"
-        android:textColor="#FAF8F8"
-        android:textSize="26dp"
-        tools:text="Settings Fragment" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="550dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3138686" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="283dp" />
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
