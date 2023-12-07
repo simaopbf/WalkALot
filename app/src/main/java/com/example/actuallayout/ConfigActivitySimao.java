@@ -47,7 +47,7 @@ public class ConfigActivitySimao extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_goals);
+        setContentView(R.layout.fragment_config);
 
         SharedPreferences configPreferences = getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE); // Mode private means no other app can use the saved data
         SharedPreferences.Editor editor = configPreferences.edit();
@@ -142,7 +142,7 @@ public class ConfigActivitySimao extends AppCompatActivity {
 
         /* ------------------------------- Save Button ------------------------------- */
 
-        Button bt = findViewById(R.id.btn); //represent object como uma interface view (element in the layout), capture our button from layout
+        Button bt = findViewById(R.id.btn2); //represent object como uma interface view (element in the layout), capture our button from layout
         bt.setOnClickListener(new View.OnClickListener() { //defining a listener: register the onClick listener with the implementation
             //the parameters can be a function that will be called when the user clicks on the button
             @Override

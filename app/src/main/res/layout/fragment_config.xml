@@ -42,8 +42,8 @@
 
     <TextView
         android:id="@+id/weightTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="114dp"
+        android:layout_height="119dp"
         android:layout_marginBottom="64dp"
         android:drawableTop="@drawable/weight_icon"
         android:drawablePadding="8dp"
@@ -60,8 +60,8 @@
 
     <TextView
         android:id="@+id/birthTxt"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="103dp"
         android:layout_marginBottom="64dp"
         android:drawableTop="@drawable/ageicon"
         android:drawablePadding="8dp"
@@ -78,8 +78,8 @@
 
     <TextView
         android:id="@+id/heightTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="129dp"
         android:layout_marginBottom="64dp"
         android:drawableTop="@drawable/height_icon"
         android:drawablePadding="8dp"
@@ -119,8 +119,8 @@
 
     <TextView
         android:id="@+id/genderTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="138dp"
+        android:layout_height="87dp"
         android:layout_marginBottom="32dp"
         android:drawableLeft="@drawable/gender_icon"
         android:drawablePadding="12dp"
@@ -135,8 +135,8 @@
 
     <TextView
         android:id="@+id/title2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="110dp"
+        android:layout_height="130dp"
         android:drawableBottom="@drawable/userinfo"
         android:drawablePadding="20dp"
         android:gravity="center"
