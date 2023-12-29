@@ -1,18 +1,26 @@
 package com.example.actuallayout;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import java.util.Calendar;
+import android.widget.TextView;
+import android.util.Log;
+import android.graphics.Color;
+
+
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
- */
+
 public class CalendarFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -35,7 +43,7 @@ public class CalendarFragment extends Fragment {
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment CalendarFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static CalendarFragment newInstance(String param1, String param2) {
         CalendarFragment fragment = new CalendarFragment();
@@ -62,3 +70,47 @@ public class CalendarFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 }
+
+ */
+
+
+import android.widget.CalendarView;
+import android.widget.Toast;
+
+public class CalendarFragment extends Fragment {
+
+    CalendarView calendarView;
+    Calendar calendar;
+    TextView textViewSelectedDate;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        calendarView = view.findViewById(R.id.calendarView);
+        textViewSelectedDate = view.findViewById(R.id.textViewSelectedDate);
+        calendar = Calendar.getInstance();
+
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
+                String selectedDate = day + "/" + (month + 1) + "/" + year;
+                textViewSelectedDate.setText(selectedDate);
+
+                Log.d("CalendarFragment", selectedDate);
+
+
+            }
+        });
+
+        return view;
+    }
+
+
+}
+
+
+

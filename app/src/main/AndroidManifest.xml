@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_DISCOVERY" />
+    <uses-sdk android:minSdkVersion="10" />
+
 
     <application
         android:allowBackup="true"
@@ -17,53 +21,26 @@
         android:theme="@style/Theme.ActualLayout"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".LogoActivity"
-            android:clearTaskOnLaunch="true"
-            android:exported="true"
-            android:launchMode="singleTask">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".BluetoothService"
+            android:exported="false"> <!-- Change this to false if not needed to be exported -->
         </activity>
 
-        <activity
-            android:name=".ResultsActivitySimao"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ConfigActivitySimao"
-            android:exported="true" />
-        <activity
-            android:name=".GoalsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".SearchDeviceActivitySimao"
-            android:exported="true" />
+        <service
+            android:name=".StepCounterService"
+            android:exported="false"> <!-- Change this to false if not needed to be exported -->
+        </service>
 
-        <service android:name=".AcquisitionServiceSimao" />
-
-
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
-
