@@ -41,7 +41,11 @@ public class BluetoothService extends AppCompatActivity {
     public static final String TOAST = "toast";
     private TextView text;
     private Button buttonConnect;
-    private boolean isConn = false;
+    public static boolean isConn = false;
+    private BioLib.DataACC dataACC = null;
+    private byte accSensibility = 1;    // NOTE: 2G= 0, 4G= 1
+    private String accConf = "";
+    private TextView textACC;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase mDatabase;
     private MainActivity mainActivity;
@@ -63,7 +67,7 @@ public class BluetoothService extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test);
+        setContentView(R.layout.activity_main_intermediate);
 
         dbHelper = new DatabaseHelper(this);
         openDatabase();  // Open the database when the activity is created
@@ -73,8 +77,8 @@ public class BluetoothService extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        text = findViewById(R.id.lblStatus);
-        text.setText("");
+        /*text = findViewById(R.id.lblStatus);
+        text.setText("");*/
 
         // MACADDRESS:
         address = "00:23:FE:00:0B:34";
@@ -100,48 +104,20 @@ public class BluetoothService extends AppCompatActivity {
                     Log.d("BluetoothService", "Connect button clicked");
                     Toast.makeText(getApplicationContext(), "Connect button clicked", Toast.LENGTH_SHORT).show();
 
-                    // Check if Bluetooth is enabled
-                    if (!lib.mBluetoothAdapter.isEnabled()) {
-                        // Bluetooth is not enabled, request user to enable it
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(enableBtIntent, BioLib.REQUEST_ENABLE_BT);
-                        return;
+                    try {
+                        deviceToConnect = lib.mBluetoothAdapter.getRemoteDevice(address);
+                        Reset();
+                        text.setText("");
+                        lib.Connect(address, 5);
+                    } catch (Exception e) {
+                        text.setText("Error to connect device: " + address);
+                        e.printStackTrace();
                     }
-
-                    if (ContextCompat.checkSelfPermission(BluetoothService.this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(BluetoothService.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, MY_BLUETOOTH_PERMISSION_REQUEST_CODE);
-                        return;
-                    }
-                    if (ContextCompat.checkSelfPermission(BluetoothService.this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-                        // Request BLUETOOTH permission
-                        ActivityCompat.requestPermissions(BluetoothService.this, new String[]{Manifest.permission.BLUETOOTH}, MY_BLUETOOTH_PERMISSION_REQUEST_CODE);
-                        return;
-                    }
-                    deviceToConnect = lib.mBluetoothAdapter.getRemoteDevice(address);
-                    if (deviceToConnect == null) {
-                        Log.e("BluetoothService", "Bluetooth device is null for address: " + address);
-                        Toast.makeText(getApplicationContext(), "Bluetooth device is null", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    Reset();
-                    text.setText("");
-                    Log.d("BluetoothService", "Attempting to connect to device: " + deviceToConnect.getName() + " (" + deviceToConnect.getAddress() + ")");
-
-
-                    if (ContextCompat.checkSelfPermission(BluetoothService.this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(BluetoothService.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, MY_BLUETOOTH_PERMISSION_REQUEST_CODE);
-                        return;
-                    }
-                    lib.mBluetoothAdapter.cancelDiscovery();  // Cancel discovery before connecting
-                    lib.Connect(address, 5);
-                } catch (Exception e) {
-                    Log.e("BluetoothService", "Error connecting to device: " + e.getMessage());
-                    text.setText("Error to connect device: " + address);
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
-        });
+            });
 
         buttonConnect.setEnabled(false);  // Disable the button initially
     }
@@ -170,48 +146,20 @@ public class BluetoothService extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+             /*   case BioLib.MESSAGE_READ:
+                    textDataReceived.setText("RECEIVED: " + msg.arg1);
+                    break;
+*/
                 case BioLib.MESSAGE_DEVICE_NAME:
                     mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(), "Connected to " + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
                     text.append("Connected to " + mConnectedDeviceName + " \n");
                     break;
 
-                case BioLib.STATE_CONNECTED:
-                    if (ContextCompat.checkSelfPermission(BluetoothService.this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Request BLUETOOTH permission
-                        ActivityCompat.requestPermissions(BluetoothService.this, new String[]{Manifest.permission.BLUETOOTH}, MY_BLUETOOTH_PERMISSION_REQUEST_CODE);
-                        return;
-                    }
-                    Toast.makeText(getApplicationContext(), "Connected to " + deviceToConnect.getName(), Toast.LENGTH_SHORT).show();
-                    text.append("   Connect to " + deviceToConnect.getName() + " \n");
-                    isConn = true;
-                    buttonConnect.setEnabled(false);
-
-                    // Send broadcast to notify MainActivity about successful connection
-                    Intent connectionIntent = new Intent("bluetoothConnectionStatus");
-                    connectionIntent.putExtra("isConnected", true);
-                    sendBroadcast(connectionIntent);
-                    break;
-
-                case BioLib.UNABLE_TO_CONNECT_DEVICE:
-                    Exception connectException = (Exception) msg.obj;
-                    if (connectException != null) {
-                        connectException.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "Unable to connect device! " + connectException.getMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Log.e("BluetoothService", "Connect exception is null");
-                        Toast.makeText(getApplicationContext(), "Unable to connect device!", Toast.LENGTH_SHORT).show();
-                    }
-                    text.append("   Unable to connect device \n");
+                case BioLib.MESSAGE_BLUETOOTH_NOT_SUPPORTED:
+                    Toast.makeText(getApplicationContext(), "Bluetooth NOT supported. Aborting! ", Toast.LENGTH_SHORT).show();
+                    text.append("Bluetooth NOT supported. Aborting! \n");
                     isConn = false;
-                    buttonConnect.setEnabled(true);
-                    break;
-
-                case BioLib.MESSAGE_DISCONNECT_TO_DEVICE:
-                    Toast.makeText(getApplicationContext(), "Device connection was lost", Toast.LENGTH_SHORT).show();
-                    text.append("   Disconnected from " + deviceToConnect.getName() + " \n");
-                    isConn = false;
-                    buttonConnect.setEnabled(true);
                     break;
 
                 case BioLib.MESSAGE_BLUETOOTH_ENABLED:
@@ -219,24 +167,169 @@ public class BluetoothService extends AppCompatActivity {
                     text.append("Bluetooth is now enabled \n");
                     text.append("Macaddress selected: " + address + " \n");
                     buttonConnect.setEnabled(true);
+
                     break;
 
                 case BioLib.MESSAGE_BLUETOOTH_NOT_ENABLED:
                     Toast.makeText(getApplicationContext(), "Bluetooth not enabled! ", Toast.LENGTH_SHORT).show();
                     text.append("Bluetooth not enabled \n");
                     isConn = false;
-                    buttonConnect.setEnabled(false);
                     break;
 
                 case BioLib.REQUEST_ENABLE_BT:
                     Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableIntent, BioLib.REQUEST_ENABLE_BT);
-                    text.append("Request Bluetooth enable \n");
+                    text.append("Request bluetooth enable \n");
                     break;
 
-                case BioLib.MESSAGE_READ:
-                    text.append("RECEIVED: " + msg.arg1 + "\n");
+                case BioLib.STATE_CONNECTING:
+                    text.append("   Connecting to device ... \n");
                     break;
+
+                case BioLib.STATE_CONNECTED:
+                    Toast.makeText(getApplicationContext(), "Connected to " + deviceToConnect.getName(), Toast.LENGTH_SHORT).show();
+                    text.append("   Connect to " + deviceToConnect.getName() + " \n");
+                    isConn = true;
+
+                    buttonConnect.setEnabled(false);
+
+                    break;
+
+                case BioLib.UNABLE_TO_CONNECT_DEVICE:
+                    Toast.makeText(getApplicationContext(), "Unable to connect device! ", Toast.LENGTH_SHORT).show();
+                    text.append("   Unable to connect device \n");
+                    isConn = false;
+
+                    buttonConnect.setEnabled(true);
+
+
+                    break;
+
+                case BioLib.MESSAGE_DISCONNECT_TO_DEVICE:
+                    Toast.makeText(getApplicationContext(), "Device connection was lost", Toast.LENGTH_SHORT).show();
+                    text.append("   Disconnected from " + deviceToConnect.getName() + " \n");
+                    isConn = false;
+
+                    buttonConnect.setEnabled(true);
+
+
+                    break;
+
+                /*case BioLib.MESSAGE_PUSH_BUTTON:
+                    DATETIME_PUSH_BUTTON = (Date)msg.obj;
+                    numOfPushButton = msg.arg1;
+                    textPUSH.setText("PUSH-BUTTON: [#" + numOfPushButton + "]" + DATETIME_PUSH_BUTTON.toString());
+                    break;
+
+                case BioLib.MESSAGE_RTC:
+                    DATETIME_RTC = (Date)msg.obj;
+                    textRTC.setText("RTC: " + DATETIME_RTC.toString());
+                    break;
+
+                case BioLib.MESSAGE_TIMESPAN:
+                    DATETIME_TIMESPAN = (Date)msg.obj;
+                    textTimeSpan.setText("SPAN: " + DATETIME_TIMESPAN.toString());
+                    break;
+
+                case BioLib.MESSAGE_DATA_UPDATED:
+                    BioLib.Output out = (BioLib.Output)msg.obj;
+                    BATTERY_LEVEL = out.battery;
+                    textBAT.setText("BAT: " + BATTERY_LEVEL + " %");
+                    PULSE = out.pulse;
+                    textPULSE.setText("HR: " + PULSE + " bpm     Nb. Leads: " + lib.GetNumberOfChannels());
+                    break;
+
+                case BioLib.MESSAGE_SDCARD_STATE:
+                    SDCARD_STATE = (int)msg.arg1;
+                    if (SDCARD_STATE == 1)
+                        textSDCARD.setText("SD CARD STATE: ON");
+                    else
+                        textSDCARD.setText("SD CARD STATE: OFF");
+                    break;
+
+                case BioLib.MESSAGE_RADIO_EVENT:
+                    textRadioEvent.setText("Radio-event: received ... ");
+
+                    typeRadioEvent = (byte)msg.arg1;
+                    infoRadioEvent = (byte[]) msg.obj;
+
+                    String str = "";
+                    try {
+                        str = new String(infoRadioEvent, "UTF8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    textRadioEvent.setText("Radio-event: " + typeRadioEvent + "[" + str + "]");
+                    break;
+
+                case BioLib.MESSAGE_FIRMWARE_VERSION:
+                    // Show firmware version in device VitalJacket ...
+                    firmwareVersion = (String)msg.obj;
+                    break;
+
+                case BioLib.MESSAGE_DEVICE_ID:
+                    deviceId = (String)msg.obj;
+                    textDeviceId.setText("Device Id: " + deviceId);
+                    break; */
+
+                case BioLib.MESSAGE_ACC_SENSIBILITY:
+                    accSensibility = (byte)msg.arg1;
+                    accConf = "4G";
+                    switch (accSensibility)
+                    {
+                        case 0:
+                            accConf = "2G";
+                            break;
+
+                        case 1:
+                            accConf = "4G";
+                            break;
+                    }
+
+                    textACC.setText("ACC [" + accConf + "]:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
+                    break;
+
+              /*  case BioLib.MESSAGE_PEAK_DETECTION:
+                    BioLib.QRS qrs = (BioLib.QRS) msg.obj;
+                    // textHR.setText("PEAK: " + qrs.position + "  BPMi: " + qrs.bpmi + " bpm  BPM: " + qrs.bpm + " bpm  R-R: " + qrs.rr + " ms");
+
+                    dbHelper.addQRSData(qrs);
+                    break; */
+
+             /*   case BioLib.MESSAGE_ACC_UPDATED:
+                    dataACC = (BioLib.DataACC)msg.obj;
+
+                    if (accConf == "")
+                        textACC.setText("ACC:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
+                    else
+                        textACC.setText("ACC [" + accConf + "]:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
+
+                    break;
+
+                    */
+
+
+               /* case BioLib.MESSAGE_ECG_STREAM:
+                    try {
+                        textECG.setText("ECG received");
+                        ecg = (byte[][]) msg.obj;
+                        int nLeads = ecg.length;
+                        nBytes = ecg[0].length;
+                        //   textECG.setText("ECG stream: OK   nBytes: " + nBytes + "   nLeads: " + nLeads);
+
+                        // Store ECG data in SQLite database
+                        // Convert ECG data to a suitable format (e.g., String)
+
+                        String ecgDataString = convertECGDataToString(ecg);
+                        handleECGDataReceived(ecg);
+
+                        // Store ECG data in SQLite database*/
+
+
+                   /* } catch (Exception ex) {
+                        //textECG.setText("ERROR in ecg stream");
+                    }
+                    break;*/
 
                 case BioLib.MESSAGE_TOAST:
                     Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
@@ -244,6 +337,7 @@ public class BluetoothService extends AppCompatActivity {
             }
         }
     };
+
 
     private void Reset() {
         try {
@@ -266,5 +360,7 @@ public class BluetoothService extends AppCompatActivity {
 
         lib = null;
     }
-
+    boolean isBluetoothConnected() {
+        return isConn;  // Assuming isConn is a boolean variable that indicates the Bluetooth connection status
+    }
 }

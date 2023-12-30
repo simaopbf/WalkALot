@@ -79,13 +79,28 @@ public class LoginActivity extends AppCompatActivity {
                     long userId = dbHelper.getUserIdByUsername(enteredUsername);
 
                     if (userId != -1) {
-                        // Start MainActivity and pass the user ID
+                        /*// Start MainActivity and pass the user ID
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("userId", userId);
                         startActivity(intent);
 
                         // Finish LoginActivity to prevent going back with the back button
-                        finish();
+                        finish();*/
+
+                        Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
+                        // Check Bluetooth connection
+                        if (isBluetoothConnected()) {
+                            // Start MainActivity and pass the user ID
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("userId", userId);
+                            startActivity(intent);
+                            // Finish LoginActivity to prevent going back with the back button
+                            finish();
+                        } else {
+                            // If Bluetooth is not connected, redirect to BluetoothService
+                            Intent intent = new Intent(LoginActivity.this, BluetoothService.class);
+                            startActivity(intent);
+                        }
                     } else {
                         Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
                     }
@@ -123,4 +138,10 @@ public class LoginActivity extends AppCompatActivity {
 
         return result;
     }
+
+    private boolean isBluetoothConnected() {
+        BluetoothService bluetoothService = new BluetoothService();  // Instantiate BluetoothService
+        return bluetoothService.isBluetoothConnected();
+    }
+
 }

@@ -11,7 +11,7 @@ import android.util.Log;
 import Bio.Library.namespace.BioLib;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "user_db";
+    private static final String DATABASE_NAME = "WalkALot.db";
     private static final int DATABASE_VERSION = 1;
 
     public DatabaseHelper(Context context) {
@@ -22,6 +22,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create the user table
         db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, gender TEXT, height INTEGER, age INTEGER, weight INTEGER)");
+        db.execSQL("CREATE TABLE Data(id INTEGER PRIMARY KEY AUTOINCREMENT, steps INTEGER, cal REAL , dist INTEGER, time INTEGER, date TEXT UNIQUE)"); //hour INTEGER PRIMARY KEY AUTOINCREMENT, energyE REAL
+
         // Insert default users
         db.execSQL("INSERT INTO users (username, password) VALUES ('user1', 'pass1')");
         db.execSQL("INSERT INTO users (username, password) VALUES ('user2', 'pass2')");
@@ -31,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS users");
+        db.execSQL("DROP TABLE IF EXISTS Data");
         onCreate(db);
     }
 
@@ -47,6 +50,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return newRowId;
+    }
+
+    // Insert a new record into the Events data base.
+    public long insert(int steps, double cal, int dist, int time, String date) { //String hour, String energyE
+        ContentValues cv = new ContentValues();
+        // Create a new map of values, where column names are the keys
+        //cv.put("hour", hour);
+        cv.put("steps", steps);
+        cv.put("cal", cal);
+        cv.put("dist", dist);
+        cv.put("time", time);
+        cv.put("date", date);
+        return getWritableDatabase().insert("Data", null, cv); // Result: Insert the new row, returning the primary key value of the new row
     }
 
     public long insertSettings(String gender, int height, int weight, int age) {
