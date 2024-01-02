@@ -1,16 +1,32 @@
 package com.example.actuallayout;
 
+import static android.app.Service.START_REDELIVER_INTENT;
+import static android.app.Service.START_STICKY;
+import static com.example.actuallayout.ProfileFragment.CAL_GOAL;
+import static com.example.actuallayout.ProfileFragment.DIST_GOAL;
+import static com.example.actuallayout.ProfileFragment.DIST_GOAL_U;
+import static com.example.actuallayout.ProfileFragment.GOALS_PREFS;
+import static com.example.actuallayout.ProfileFragment.STEPS_GOAL;
+import static com.example.actuallayout.ProfileFragment.TIME_GOAL;
+import static com.example.actuallayout.ProfileFragment.TIME_GOAL_U;
+import static com.example.actuallayout.SettingsFragment.CONFIG_PREFS;
+import static com.example.actuallayout.SettingsFragment.GENDER;
+import static com.example.actuallayout.SettingsFragment.HEIGHT;
+import static com.example.actuallayout.SettingsFragment.WEIGHT;
+import static java.lang.Math.abs;
+
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,13 +36,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.Manifest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import Bio.Library.namespace.BioLib;
 
@@ -41,15 +63,62 @@ public class BluetoothService extends AppCompatActivity {
     public static final String TOAST = "toast";
     private TextView text;
     private Button buttonConnect;
+    private Button mainButton;
     public static boolean isConn = false;
     private BioLib.DataACC dataACC = null;
     private byte accSensibility = 1;    // NOTE: 2G= 0, 4G= 1
     private String accConf = "";
     private TextView textACC;
+    private long mUserId;
     private DatabaseHelper dbHelper;
     private SQLiteDatabase mDatabase;
     private MainActivity mainActivity;
     private static final int MY_BLUETOOTH_PERMISSION_REQUEST_CODE = 1;
+
+    //Fui buscar
+    // ACC data variables
+
+    private static Double[] dadosAnteriores = {0.0,0.0,0.0};
+    private static double agregadoMagnitudes = 0.0;
+    private static Double kcalTotais;
+    private static int status = 0;
+    private static Integer stepCount = 0;
+    private static Integer distCount = 0;
+    private static Integer timeCount = 0;
+    private static Integer sec = 0;
+    private static Integer min = 0;
+    private static Integer hour = 0;
+    private int runningCounter = 0;
+    private int walkingCounter = 0;
+    private int notMovingCounter = 0;
+
+
+    // DB
+
+    private Date currentTime;
+
+    // Config
+
+    private SharedPreferences configPreferences;
+    private int Weight;
+    private int Height;
+    private String Gender;
+
+    // Goals
+
+    private int Steps;
+    private int Calories;
+    private int Distance;
+    private int Time;
+    private String TimeU; // U for the string Unit (e.g., h or min)
+    private String DistU;
+    public static final String CHANNEL_ID2 = "GoalNotification";
+
+//acabei buscar
+
+
+
+
 
     // Open the database connection
     private void openDatabase() {
@@ -72,13 +141,15 @@ public class BluetoothService extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         openDatabase();  // Open the database when the activity is created
 
+        initPreferencesAndGoals();
+
         Log.d("BluetoothService", "BluetoothService onCreate");
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        /*text = findViewById(R.id.lblStatus);
-        text.setText("");*/
+        text = findViewById(R.id.lblStatus);
+        text.setText("");
 
         // MACADDRESS:
         address = "00:23:FE:00:0B:34";
@@ -109,6 +180,7 @@ public class BluetoothService extends AppCompatActivity {
                         Reset();
                         text.setText("");
                         lib.Connect(address, 5);
+
                     } catch (Exception e) {
                         text.setText("Error to connect device: " + address);
                         e.printStackTrace();
@@ -120,6 +192,126 @@ public class BluetoothService extends AppCompatActivity {
             });
 
         buttonConnect.setEnabled(false);  // Disable the button initially
+
+        mainButton = findViewById(R.id.buttonMain);
+        mainButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+        // Start MainActivity and pass the user ID
+        Intent intent = new Intent(BluetoothService.this, MainActivity.class);
+        // Retrieve userId from Intent
+        mUserId = getIntent().getLongExtra("userId", -1);
+        intent.putExtra("userId", mUserId);
+        startActivity(intent);}
+            });
+    }
+
+    private void initPreferencesAndGoals() {
+        // Configs
+        configPreferences = getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+
+        // Goals
+        SharedPreferences goalsPreferences = getSharedPreferences(GOALS_PREFS, MODE_PRIVATE);
+
+        Steps = goalsPreferences.getInt(STEPS_GOAL, 10000);
+        Calories = goalsPreferences.getInt(CAL_GOAL, 685);
+        Distance = goalsPreferences.getInt(DIST_GOAL, 8);
+        Time = goalsPreferences.getInt(TIME_GOAL, 1);
+        DistU = goalsPreferences.getString(DIST_GOAL_U, "Km");
+        TimeU = goalsPreferences.getString(TIME_GOAL_U, "h");
+
+        // Dataset
+        stepCount = 0;
+        kcalTotais = 0.0;
+        distCount = 0;
+        timeCount = 0;
+
+        dbHelper = new DatabaseHelper(this);
+        Cursor dbData = dbHelper.getAll();
+
+        ArrayList<Integer> steps = new ArrayList<>();
+        ArrayList<Double> cal = new ArrayList<>();
+        ArrayList<Integer> dist = new ArrayList<>();
+        ArrayList<Integer> time = new ArrayList<>();
+
+        if (dbData.getCount() != 0) {
+            while (dbData.moveToNext()) {
+                steps.add(dbData.getInt(0));
+                cal.add(dbData.getDouble(1));
+                dist.add(dbData.getInt(2));
+                time.add(dbData.getInt(3));
+            }
+
+            for (int i = 0; i < steps.size(); i++) {
+                stepCount = stepCount + steps.get(i);
+                kcalTotais = kcalTotais + cal.get(i);
+                distCount = distCount + dist.get(i);
+                timeCount = timeCount + time.get(i);
+            }
+        }
+
+        dbHelper.close();
+    }
+
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        // Time
+
+        DateFormat format = new SimpleDateFormat("HH/mm/ss", Locale.UK);
+        String now = format.format(Calendar.getInstance().getTime());
+        min = Integer.valueOf(now.substring(3, 5));
+        hour = Integer.valueOf(now.substring(0, 2));
+        sec = Integer.valueOf(now.substring(6, 8));
+
+        // Configs
+
+        configPreferences = getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+
+        // Goals
+
+        SharedPreferences goalsPreferences = getSharedPreferences(GOALS_PREFS, MODE_PRIVATE);
+
+        Steps = goalsPreferences.getInt(STEPS_GOAL, 10000);
+        Calories = goalsPreferences.getInt(CAL_GOAL, 685);
+        Distance = goalsPreferences.getInt(DIST_GOAL, 8);
+        Time = goalsPreferences.getInt(TIME_GOAL, 1);
+        DistU = goalsPreferences.getString(DIST_GOAL_U, "Km");
+        TimeU = goalsPreferences.getString(TIME_GOAL_U, "h");
+
+        // Dataset
+
+        stepCount = 0;
+        kcalTotais = 0.0;
+        distCount = 0;
+        timeCount = 0;
+
+        dbHelper = new DatabaseHelper(this);
+        Cursor dbData = dbHelper.getAll();
+
+        ArrayList<Integer> steps = new ArrayList<>();
+        ArrayList<Double> cal = new ArrayList<>();
+        ArrayList<Integer> dist = new ArrayList<>();
+        ArrayList<Integer> time = new ArrayList<>();
+
+
+        if (dbData.getCount() != 0) {
+            while (dbData.moveToNext()) {
+                steps.add(dbData.getInt(0));
+                cal.add(dbData.getDouble(1));
+                dist.add(dbData.getInt(2));
+                time.add(dbData.getInt(3));
+            }
+
+            for (int i = 0; i < steps.size(); i++) {
+                stepCount = stepCount + steps.get(i);
+                kcalTotais = kcalTotais + cal.get(i);
+                distCount = distCount + dist.get(i);
+                timeCount = timeCount + time.get(i);
+            }
+        }
+
+        dbHelper.close();
+        return START_STICKY;
     }
 
     @Override
@@ -211,8 +403,6 @@ public class BluetoothService extends AppCompatActivity {
                     isConn = false;
 
                     buttonConnect.setEnabled(true);
-
-
                     break;
 
                 /*case BioLib.MESSAGE_PUSH_BUTTON:
@@ -289,24 +479,14 @@ public class BluetoothService extends AppCompatActivity {
                     textACC.setText("ACC [" + accConf + "]:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
                     break;
 
-              /*  case BioLib.MESSAGE_PEAK_DETECTION:
+              case BioLib.MESSAGE_PEAK_DETECTION:
                     BioLib.QRS qrs = (BioLib.QRS) msg.obj;
-                    // textHR.setText("PEAK: " + qrs.position + "  BPMi: " + qrs.bpmi + " bpm  BPM: " + qrs.bpm + " bpm  R-R: " + qrs.rr + " ms");
-
-                    dbHelper.addQRSData(qrs);
-                    break; */
-
-             /*   case BioLib.MESSAGE_ACC_UPDATED:
-                    dataACC = (BioLib.DataACC)msg.obj;
-
-                    if (accConf == "")
-                        textACC.setText("ACC:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
-                    else
-                        textACC.setText("ACC [" + accConf + "]:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
-
                     break;
 
-                    */
+                case BioLib.MESSAGE_ACC_UPDATED:
+                    dataACC = (BioLib.DataACC)msg.obj;
+                    dataReady();
+                    break;
 
 
                /* case BioLib.MESSAGE_ECG_STREAM:
@@ -357,10 +537,202 @@ public class BluetoothService extends AppCompatActivity {
                 lib.mBluetoothAdapter.cancelDiscovery();
             }
         }
+        if(dataACC != null) {
+            adddata();
+        }
 
         lib = null;
     }
     boolean isBluetoothConnected() {
         return isConn;  // Assuming isConn is a boolean variable that indicates the Bluetooth connection status
     }
+
+    private void dataReady()
+    {
+
+        stepCounter();
+        calculateKcal();
+
+        sendDataToActivity(stepCount, kcalTotais, distCount,timeCount, status);
+
+        createNotificationChannel();
+
+        if(stepCount == Steps)
+        {
+            goalsNotification("Steps",R.drawable.age);
+            //mudar para steps_icon
+        }
+        else if (Math.round(kcalTotais) == Calories)
+        {
+            goalsNotification("Calories",R.drawable.age);
+            //mudar para calicon
+        }
+        else if (distCount == Distance)
+        {
+            goalsNotification("Distance",R.drawable.age);
+            //mudar para distanceicon
+        }
+
+    }
+
+    private void sendDataToActivity(int stepCount, double kcal, int distCount,int timeCount, int status) {
+        Intent intent = new Intent("Update UI");
+        Bundle b = new Bundle();
+        b.putInt("Steps", stepCount);
+        b.putDouble("Kcal", kcal);
+        b.putInt("Dist",distCount);
+        b.putInt("Time",timeCount);
+        b.putInt("Status",status);
+        intent.putExtra("AppData", b);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel achievementChannel = new NotificationChannel(
+                    CHANNEL_ID2, "Goal",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(achievementChannel);
+        }
+    }
+
+    private void adddata() { // Add data to dataset
+        dbHelper.insert(stepCount, kcalTotais, distCount, timeCount, currentTime.toString());
+    }
+
+    private void goalsNotification(String message, int icon){
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID2);
+        builder.setContentTitle("Congratulations!");
+        builder.setContentTitle("You have accomplished your " + message + " goal!");
+        builder.setAutoCancel(true); // True for swipe.
+        builder.setSmallIcon(icon);
+        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+        manager.notify(2,builder.build());
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ---------------------------------------------------------- Data processing ----------------------------------------------------------------------*/
+
+    private void stepCounter() {
+
+        DateFormat format = new SimpleDateFormat("HH/mm/ss", Locale.UK);
+        String date = format.format(Calendar.getInstance().getTime());
+        int newmin = Integer.valueOf(date.substring(3,5));
+        int newhour = Integer.valueOf(date.substring(0,1));
+        int newsec = Integer.valueOf(date.substring(6,8));
+
+        Double x = (double) dataACC.X;
+        Double y = (double) dataACC.Y;
+        Double z = (double) dataACC.Z;
+
+        //Count of steps
+
+        double MagnitudePrevious = Math.sqrt(dadosAnteriores[0] * dadosAnteriores[0] + dadosAnteriores[1] * dadosAnteriores[1] + dadosAnteriores[2] * dadosAnteriores[2]);
+        double Magnitude = Math.sqrt(x * x + y * y + z * z);
+        double MagnitudeDelta = Magnitude - MagnitudePrevious;
+        agregadoMagnitudes += abs(MagnitudeDelta);
+        encherDados(x, y, z);
+
+        currentTime = Calendar.getInstance().getTime();
+
+        if (MagnitudeDelta >= 30 && MagnitudeDelta <= 90)
+        {
+            stepCount++;
+            distance();
+            time(newhour,newmin,newsec);
+            notMovingCounter=0;
+            status = 1;
+        }
+        else if (MagnitudeDelta > 90)
+        {
+            stepCount++;
+            distance();
+            time(newhour, newmin,newsec);
+            status = 2;
+            notMovingCounter=0;
+        }
+        else
+        {
+            notMovingCounter++;
+            min = Integer.valueOf(date.substring(3,5));
+            hour = Integer.valueOf(date.substring(0,1));
+            sec = Integer.valueOf(date.substring(6,7));
+            walkingCounter=0;
+            if(notMovingCounter >=15)
+            {
+                status = 0;
+            }
+        }
+    }
+
+    private void calculateKcal() {
+        Weight = configPreferences.getInt(WEIGHT,70);
+        final int fs = 10;
+        final int adjustment = fs * 60;
+        kcalTotais = ((0.001064 * agregadoMagnitudes + 0.087512 * Weight - 5.500229)/fs);
+        // Equation for every min so its adjusted
+    }
+
+    private void distance(){
+        Height = configPreferences.getInt(HEIGHT,165);
+        Gender = configPreferences.getString(GENDER,"Male");
+
+        if(Gender.equals("Male"))
+        {
+            distCount = (int) Math.round((0.415 * Height/100) * stepCount);
+        }
+        else
+        {
+            distCount = (int) Math.round((0.413 * Height/100) * stepCount);
+        }
+
+        distCount++;
+    }
+
+    private void encherDados(Double x, Double y, Double z){
+        dadosAnteriores[0] = x;
+        dadosAnteriores[1] = y;
+        dadosAnteriores[2] = z;
+    }
+
+    public void time(int h, int m, int s){
+
+        if(s - sec >= 0)
+        {
+            timeCount = Math.round(timeCount + (s - sec)/60);
+        }
+        else
+        {
+            timeCount = timeCount + s/60;
+        }
+        if(m - min >= 0)
+        {
+            timeCount = timeCount + (m- min);
+        }
+        else
+        {
+            timeCount = timeCount + m;
+        }
+
+        if (h-hour >= 0){
+            timeCount = timeCount + (h - hour)*60;
+        }
+    }
+
+
 }

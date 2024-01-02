@@ -190,6 +190,15 @@
         android:layout_marginLeft="30dp"
         android:src="@drawable/minus" />
 
+    <TextView
+        android:id="@+id/TDEE"
+        android:layout_width="95dp"
+        android:layout_height="102dp"
+        android:drawableLeft="@drawable/fitnessicon"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:textSize="18dp" />
+
     <Button
         android:id="@+id/save_btn1"
         android:layout_width="160dp"

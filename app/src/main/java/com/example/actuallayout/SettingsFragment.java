@@ -1,5 +1,8 @@
 package com.example.actuallayout;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,14 +32,25 @@ public class SettingsFragment extends Fragment {
     private static final String STATE_HEIGHT = "state_height";
     private static final String STATE_AGE = "state_age";
 
-
+    public static final String CONFIG_PREFS = "configPrefs";
+    public static String WEIGHT = "weightPrefs";
+    public static String AGE = "birthPrefs";
+    public static String HEIGHT = "heightPrefs";
+    public static String GENDER = "genderPrefs";
+    public static final String TDEE = "TDEEPrefs";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private static int weightInp;
     private static int heightInp;
     private static int ageInp;
+    private static String genderInp = "Male";
     private long mUserId; // Store the user ID received from SignUpActivity
+    private String Gender;
+    private int Weight;
+    private int Birth;
+    private int Height;
+    private int tdee;
     NumberPicker weightPick;
     NumberPicker heightPick;
     NumberPicker agePick;
@@ -95,6 +109,7 @@ public class SettingsFragment extends Fragment {
 
         dbHelper = new DatabaseHelper(requireContext());
 
+
         weightPick = view.findViewById(R.id.weightPick);
         heightPick = view.findViewById(R.id.heightPick);
         agePick = view.findViewById(R.id.agePick);
@@ -118,7 +133,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker weightPick, int oldValue, int newValue) {
                 weightInp = newValue;
-
+                WEIGHT = String.valueOf(weightInp);
             }
         });
 
@@ -127,6 +142,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker heightPick, int oldValue, int newValue) {
                 heightInp = newValue;
+                HEIGHT= String.valueOf(heightInp);
             }
         });
 
@@ -135,6 +151,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker agePick, int oldValue, int newValue) {
                 ageInp = newValue;
+                AGE = String.valueOf(ageInp);
             }
         });
 
@@ -142,6 +159,16 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveUserSettings();
+                // TDEE calculation
+
+                tdee = (int) Math.round((10 * weightInp) + (6.25 * heightInp) - (5 - ageInp));
+
+                if (genderInp.equals("Male"))
+                {tdee = (int) Math.round((tdee + 5) * 1.15);}
+                else
+                {tdee = (int) Math.round((tdee - 161) * 1.15);}
+
+                loadData();
             }
         });
 
@@ -153,7 +180,7 @@ public class SettingsFragment extends Fragment {
         if (mUserId != -1) {
             // Retrieve the values from NumberPickers or other UI elements
             String genderInp = "Male"; // Replace with your logic to get the gender
-
+            GENDER = genderInp;
             // Update the user settings in the database
             int rowsAffected = (int) dbHelper.insertSettings(genderInp, heightInp, weightInp, ageInp);
 
@@ -168,6 +195,25 @@ public class SettingsFragment extends Fragment {
             // Handle the case where user ID is not valid
             Toast.makeText(requireContext(), "Invalid user ID", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void loadData(){
+
+        // Load config shared preferences
+
+        SharedPreferences configPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+
+        Gender = configPreferences.getString(GENDER,"Female");
+        Weight = configPreferences.getInt(WEIGHT,70);
+        Birth = configPreferences.getInt(AGE, 1997);
+        Height = configPreferences.getInt(HEIGHT,165);
+
+
+        weightPick.setValue(Weight);
+        agePick.setValue(Birth);
+        heightPick.setValue(Height);
+
+
     }
 }
 

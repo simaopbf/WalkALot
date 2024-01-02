@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_APP_SEARCH_DATA" />
     <uses-permission android:name="android.permission.READ_APP_SEARCH_DATA" />
@@ -34,7 +35,11 @@
 
         <activity
             android:name=".BluetoothService"
-            android:exported="false"> <!-- Change this to false if not needed to be exported -->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.actuallayout.BluetoothService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service
@@ -43,7 +48,17 @@
         </service>
 
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

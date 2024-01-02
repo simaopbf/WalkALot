@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -39,7 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Retrieve userId from Intent
         mUserId = getIntent().getLongExtra("userId", -1);
-// Pass userId to the initial fragment (HomeFragment in this case)
+        if (mUserId == -1) {
+            // If userId is not found in the intent, try getting it from the savedInstanceState
+            if (savedInstanceState != null) {
+                mUserId = savedInstanceState.getLong("userId", -1);
+            }
+        }
+        // Pass userId to the initial fragment (HomeFragment in this case)
         replaceFragment(HomeFragment.newInstance(mParam1, mParam2, mUserId));
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
@@ -71,7 +78,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
     }
-
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("userId", mUserId);
+    }
 
 }
     /*private void startBluetoothService() {

@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                     long userId = dbHelper.getUserIdByUsername(enteredUsername);
 
                     if (userId != -1) {
-                        Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
+                        /*Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
 
                         Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                         // Start MainActivity and pass the user ID
@@ -55,7 +55,22 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
 
                         // Finish LoginActivity to prevent going back with the back button
-                        finish();
+                        finish();*/
+                        Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
+                        // Check Bluetooth connection
+                        if (isBluetoothConnected()) {
+                            // Start MainActivity and pass the user ID
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("userId", userId);
+                            startActivity(intent);
+                            // Finish LoginActivity to prevent going back with the back button
+                            finish();
+                        } else {
+                            // If Bluetooth is not connected, redirect to BluetoothService
+                            Intent intent = new Intent(LoginActivity.this, BluetoothService.class);
+                            intent.putExtra("userId", userId);
+                            startActivity(intent);
+                        }
                     } else {
                         Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
                     }
@@ -79,28 +94,14 @@ public class LoginActivity extends AppCompatActivity {
                     long userId = dbHelper.getUserIdByUsername(enteredUsername);
 
                     if (userId != -1) {
-                        /*// Start MainActivity and pass the user ID
+                        // Start MainActivity and pass the user ID
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("userId", userId);
                         startActivity(intent);
 
                         // Finish LoginActivity to prevent going back with the back button
-                        finish();*/
+                        finish();
 
-                        Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
-                        // Check Bluetooth connection
-                        if (isBluetoothConnected()) {
-                            // Start MainActivity and pass the user ID
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("userId", userId);
-                            startActivity(intent);
-                            // Finish LoginActivity to prevent going back with the back button
-                            finish();
-                        } else {
-                            // If Bluetooth is not connected, redirect to BluetoothService
-                            Intent intent = new Intent(LoginActivity.this, BluetoothService.class);
-                            startActivity(intent);
-                        }
                     } else {
                         Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
                     }
@@ -140,8 +141,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isBluetoothConnected() {
-        BluetoothService bluetoothService = new BluetoothService();  // Instantiate BluetoothService
-        return bluetoothService.isBluetoothConnected();
+        BluetoothService bluetoothService = new BluetoothService();
+
+        // Log to track the method execution
+        Log.d("LoginActivity", "Checking Bluetooth connection status...");
+
+        boolean isConnected = bluetoothService.isBluetoothConnected();
+
+        // Log the Bluetooth connection status
+        Log.d("LoginActivity", "Bluetooth connection status: " + isConnected);
+
+        return isConnected;
+
     }
 
 }

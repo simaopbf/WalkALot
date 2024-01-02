@@ -1,5 +1,6 @@
 package com.example.actuallayout;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.animation.ObjectAnimator;
+import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,6 +75,7 @@ public class HomeFragment extends Fragment {
     }
     private ProgressBar homeProgressBar;
     private ObjectAnimator animatebar;
+    private TextView stepsTextView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,10 +91,42 @@ public class HomeFragment extends Fragment {
         animatebar.setDuration(2000);
         animatebar.start();
 
+        // Find TextView by ID
+        stepsTextView = view.findViewById(R.id.stepsTextView);
+
+        // Retrieve steps from the database based on the current date
+        DatabaseHelper databaseHelper = new DatabaseHelper(requireContext());
+        Cursor cursor = databaseHelper.getAll();
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                int steps = cursor.getInt(cursor.getColumnIndex("steps"));
+
+                // Check if the date matches the current date
+                // You might need to adjust the comparison based on your date format
+                if (isCurrentDate(date)) {
+                    // Update the TextView with the steps value
+                    stepsTextView.setText(steps + "/10000");
+                    break; // No need to continue checking other records
+                }
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        databaseHelper.close();
 
         return view;
     }
 
+    private boolean isCurrentDate(String date) {
+        DateFormat dateFormat = new SimpleDateFormat("HH/mm/ss", Locale.UK);
+        String currentDate = dateFormat.format(Calendar.getInstance().getTime());
+
+        // Compare the date strings
+        return date.equals(currentDate);
+    }
 
 }
 

@@ -134,6 +134,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return userId;
     }
+    public Cursor getAll() {
+        return (getReadableDatabase().rawQuery("SELECT steps, cal, dist, time, date FROM Data GROUP BY date", null));
+    }
 
 }
 
