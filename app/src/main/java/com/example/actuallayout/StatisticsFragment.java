@@ -1,6 +1,9 @@
 package com.example.actuallayout;
 
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,13 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DecimalFormat;
@@ -85,52 +94,87 @@ public class StatisticsFragment extends Fragment {
 
     }
 
+    private ArrayList<Entry> dataValues()
+    {
+        ArrayList<Entry> dataVals = new ArrayList<Entry>();
+        dataVals.add(new Entry(0,10000));
+        dataVals.add(new Entry(1,4000));
+        dataVals.add(new Entry(2,8000));
+        dataVals.add(new Entry(3,3000));
+        dataVals.add(new Entry(4,5000));
+        dataVals.add(new Entry(5,7000));
+        dataVals.add(new Entry(6,6000));
+
+        return dataVals;
+    }
+    LineChart mpLineChart;
     @Override
     public void onViewCreated(View view,  Bundle savedInstanceState) {
         // Setup any handles to view objects here
-        BarChart barChart = (BarChart) getView().findViewById(R.id.chart);
-        barChart.getAxisRight().setDrawLabels(false);
+        mpLineChart = (LineChart) getView().findViewById(R.id.chart);
 
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0,7000f));
-        entries.add(new BarEntry(1,5000f));
-        entries.add(new BarEntry(2,10000f));
-        entries.add(new BarEntry(3,15000f));
-        entries.add(new BarEntry(4,20000f));
-        entries.add(new BarEntry(5,9000f));
-        entries.add(new BarEntry(6,12000f));
+        LineDataSet lineDataSet1 = new LineDataSet(dataValues(),"weekly data");
+        lineDataSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
-        YAxis yAxis = barChart.getAxisLeft();
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSet1);
+        LineData data = new LineData(dataSets);
+        mpLineChart.setData(data);
+        mpLineChart.invalidate();
+        lineDataSet1.setLineWidth(3f);
+        lineDataSet1.setCircleRadius(6f);
+        // mpLineChart.getAxisRight().setDrawLabels(false);
+        // mpLineChart.setDrawGridBackground(false);
+        // mpLineChart.getXAxis().setDrawGridLines(false);
+        // mpLineChart.getAxisLeft().setDrawGridLines(false);
+        //mpLineChart.setDrawBorders(false);
+        mpLineChart.setPinchZoom(false);
+        mpLineChart.setScaleEnabled(false);
+        lineDataSet1.setDrawValues(false);
+        YAxis yAxis = mpLineChart.getAxisLeft();
         yAxis.setAxisMaximum(0f);
-        yAxis.setAxisMaximum(20000f);
+        yAxis.setAxisMaximum(12000f);
         yAxis.setAxisLineWidth(2f);
         yAxis.setTextColor(Color.WHITE);
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(10);
+        mpLineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValues));
+        mpLineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        mpLineChart.getXAxis().setGranularity(1f);
+        mpLineChart.getLegend().setTextColor(android.R.color.white);
+        mpLineChart.getXAxis().setTextColor(Color.WHITE);
+        mpLineChart.getXAxis().setGranularityEnabled(true);
+        mpLineChart.getDescription().setEnabled(false);
+        Legend legend = mpLineChart.getLegend();
+        legend.setEnabled(false);
+        mpLineChart.animateXY(1000, 1000);
 
-        BarDataSet dataSet = new BarDataSet(entries,"Subjects");
-        /*dataSet.setColors(ColorTemplate.MATERIAL_COLORS);*/
-
-        DecimalFormat decimalFormat = new DecimalFormat("0.##");
-
-
-        BarData barData = new BarData(dataSet);
-        barChart.setData(barData);
-
-        barChart.getDescription().setEnabled(false);
-        barChart.invalidate();
-
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValues));
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        barChart.getXAxis().setGranularity(1f);
-        barChart.getLegend().setTextColor(android.R.color.white);
-        barChart.getXAxis().setTextColor(Color.WHITE);
-        barChart.getXAxis().setGranularityEnabled(true);
-        barChart.getDescription().setTextColor(Color.WHITE);
-        barData.setValueTextColor(Color.WHITE);
-        barData.setValueTextSize(10f);
-        barChart.animateXY(1000, 1000);
 
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+                setupGradient(mpLineChart);
+            }
+        });
+    }
+
+    private void setupGradient(LineChart mChart) {
+        Paint paint = mChart.getRenderer().getPaintRender();
+        //set value to objective
+        int height = mChart.getHeight();
+
+        LinearGradient linGrad = new LinearGradient(0, 0, 0, height,
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_blue_bright),
+                Shader.TileMode.REPEAT);
+        paint.setShader(linGrad);
+    }
+
 }
+
+
 

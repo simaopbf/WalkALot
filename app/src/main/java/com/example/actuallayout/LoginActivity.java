@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Finish LoginActivity to prevent going back with the back button
                         finish();*/
                         Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
+
                         // Check Bluetooth connection
                         if (isBluetoothConnected()) {
                             // Start MainActivity and pass the user ID

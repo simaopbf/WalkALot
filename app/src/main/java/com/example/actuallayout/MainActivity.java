@@ -46,12 +46,19 @@ public class MainActivity extends AppCompatActivity {
                 mUserId = savedInstanceState.getLong("userId", -1);
             }
         }
+        Log.d("verificarerromain", "id:" + mUserId);
+
         // Pass userId to the initial fragment (HomeFragment in this case)
         replaceFragment(HomeFragment.newInstance(mParam1, mParam2, mUserId));
+        replaceFragment(SettingsFragment.newInstance(mParam1, mParam2, mUserId));
+       // replaceFragment(StatisticsFragment.newInstance(mParam1, mParam2, mUserId));
+        //replaceFragment(ProfileFragment.newInstance(mParam1, mParam2, mUserId));
+       // replaceFragment(HomeFragment.newInstance(mParam1, mParam2, mUserId));
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             if(item.getItemId()==R.id.home){
-                replaceFragment(new HomeFragment());
+                replaceFragment(  HomeFragment.newInstance(mParam1,mParam2,mUserId));
 
             } else if (item.getItemId()==R.id.statistics) {
                 replaceFragment(new StatisticsFragment());
@@ -63,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new CalendarFragment());
 
             }else if (item.getItemId()==R.id.settings) {
-                replaceFragment(new SettingsFragment());
+                replaceFragment( SettingsFragment.newInstance(mParam1,mParam2,mUserId));
             }
 
 

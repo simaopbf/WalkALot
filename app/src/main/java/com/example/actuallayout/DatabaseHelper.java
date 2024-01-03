@@ -65,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getWritableDatabase().insert("Data", null, cv); // Result: Insert the new row, returning the primary key value of the new row
     }
 
-    public long insertSettings(String gender, int height, int weight, int age) {
+    public long updateSettings(long Id,String gender, int height, int weight, int age) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("gender", gender);
@@ -74,12 +74,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("age", age);
 
         // Insert the new user into the database
-        long newRowId = db.insert("users", null, values);
+        long rowsAffected = db.update("users", values, "id = ?",new String[]{String.valueOf(Id)});
+
 
         // Close the database connection
         db.close();
 
-        return newRowId;
+        return rowsAffected;
     }
 
     // Add ACC data to the database

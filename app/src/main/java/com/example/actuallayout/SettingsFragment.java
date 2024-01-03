@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.widget.NumberPicker;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,12 +53,13 @@ public class SettingsFragment extends Fragment {
     private int Birth;
     private int Height;
     private int tdee;
+
+
     NumberPicker weightPick;
     NumberPicker heightPick;
     NumberPicker agePick;
     Button save_btn2;
     DatabaseHelper dbHelper;
-
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -88,11 +91,11 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             mUserId = getArguments().getLong(ARG_USER_ID);
-
         } else {
             // Handle the case where user ID is not provided
             // You may want to show an error message or navigate to a different screen
-            mUserId = -1;
+
+           // mUserId = mUserId;
 
         }
     }
@@ -132,10 +135,14 @@ public class SettingsFragment extends Fragment {
         weightPick.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker weightPick, int oldValue, int newValue) {
+
                 weightInp = newValue;
                 WEIGHT = String.valueOf(weightInp);
+                Log.d("verificarerro weight", "id:" + WEIGHT);
+
             }
         });
+
 
 
         heightPick.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -177,12 +184,16 @@ public class SettingsFragment extends Fragment {
 
 
     private void saveUserSettings() {
+
         if (mUserId != -1) {
+            Log.d("verificarerro", "id:" + mUserId);
             // Retrieve the values from NumberPickers or other UI elements
             String genderInp = "Male"; // Replace with your logic to get the gender
             GENDER = genderInp;
+
+
             // Update the user settings in the database
-            int rowsAffected = (int) dbHelper.insertSettings(genderInp, heightInp, weightInp, ageInp);
+            long rowsAffected = dbHelper.updateSettings(mUserId,GENDER, heightInp, weightInp, ageInp);
 
             if (rowsAffected > 0) {
                 // Settings updated successfully
