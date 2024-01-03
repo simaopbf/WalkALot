@@ -22,15 +22,7 @@
 
     <!-- dar a op -->
 
-    <ImageView
-        android:id="@+id/settingImageView"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp"
-        android:src="@drawable/userinfo"
-        android:background="@android:color/transparent"
-        />    <!-- avatar? -->
+    <!-- avatar? -->
 
 
     <ImageView
@@ -38,22 +30,19 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="150dp"
         android:layout_marginRight="60dp"
-        android:layout_marginTop="220dp"
-        android:src="@drawable/gender"
         android:background="@android:color/transparent"
-        />
-
-
+        android:src="@drawable/gender" />
 
     <RadioGroup
+        android:id="@+id/genderPick"
         android:layout_width="97dp"
         android:layout_height="wrap_content"
-        android:background="#f2d596"
         android:layout_marginLeft="220dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
 
-        >
+        android:background="#f2d596">
 
         <RadioButton
             android:id="@+id/male_rbtn"
@@ -74,27 +63,114 @@
             android:text="Other" />
     </RadioGroup>
 
-    <ImageView
-        android:id="@+id/heightImageView"
-        android:layout_width="80dp"
-        android:layout_height="75dp"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="440dp"
         android:layout_marginRight="100dp"
-        android:src="@drawable/height"
         android:background="@android:color/transparent"
-        />
+        android:text="(cm)"
+        android:textColor="@color/blue"
+        android:textSize="25sp" />
+
+    <NumberPicker
+        android:id="@+id/heightPick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="490dp"
+        android:background="#f2d596"
+        app:layout_constraintEnd_toEndOf="@+id/heightImageView"
+        app:layout_constraintStart_toStartOf="@+id/heightImageView"
+        app:layout_constraintTop_toBottomOf="@+id/heightImageView" />
+
+    <ImageView
+        android:id="@+id/ageImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="350dp"
+        android:layout_marginRight="0dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/age" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="440dp"
+        android:layout_marginRight="0dp"
+        android:background="@android:color/transparent"
+        android:text="(years)"
+        android:textColor="@color/blue"
+        android:textSize="25sp" />
+
+    <NumberPicker
+        android:id="@+id/agePick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginLeft="175dp"
+        android:layout_marginTop="490dp"
+        android:background="#f2d596"
+        app:layout_constraintEnd_toEndOf="@+id/ageImageView"
+        app:layout_constraintStart_toStartOf="@+id/ageImageView"
+        app:layout_constraintTop_toBottomOf="@+id/ageImageView" />
+
+    <ImageView
+        android:id="@+id/weightImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="350dp"
+        android:layout_marginRight="-100dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/weight" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="440dp"
+        android:layout_marginRight="-100dp"
+        android:background="@android:color/transparent"
+        android:text="(kg)"
+        android:textColor="@color/blue"
+        android:textSize="25sp" />
+
+    <NumberPicker
+        android:id="@+id/weightPick"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginLeft="275dp"
+        android:layout_marginTop="490dp"
+        android:background="#f2d596"
+        app:layout_constraintEnd_toEndOf="@+id/weightImageView"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="@+id/weightImageView"
+        app:layout_constraintTop_toBottomOf="@+id/weightImageView" />
+
+    <Button
+        android:id="@+id/save_btn2"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#e8940e"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+    <ImageView
+        android:id="@+id/heightImageView"
+        android:layout_width="80dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="350dp"
         android:layout_marginRight="100dp"
         android:background="@android:color/transparent"
-        android:text="(cm)"
-        android:textColor="@color/blue"
-        android:textSize="25sp"/>
+        android:src="@drawable/height" />
+
     <!--
     <EditText
         android:id="@+id/heightPick"
@@ -109,41 +185,6 @@
         android:padding="10dp" />
 -->
 
-    <NumberPicker
-        android:id="@+id/heightPick"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginLeft="75dp"
-        android:background="#f2d596"
-        app:layout_constraintEnd_toEndOf="@+id/heightImageView"
-        app:layout_constraintStart_toStartOf="@+id/heightImageView"
-        app:layout_constraintTop_toBottomOf="@+id/heightImageView" />
-
-
-
-
-    <ImageView
-        android:id="@+id/ageImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="370dp"
-        android:src="@drawable/age"
-        android:background="@android:color/transparent"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="450dp"
-        android:layout_marginRight="0dp"
-        android:background="@android:color/transparent"
-        android:text="(years)"
-        android:textColor="@color/blue"
-        android:textSize="25sp"/>
 
     <!--
          <EditText
@@ -159,40 +200,6 @@
              android:padding="10dp" />
   -->
 
-    <NumberPicker
-        android:id="@+id/agePick"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginLeft="175dp"
-        android:background="#f2d596"
-        app:layout_constraintEnd_toEndOf="@+id/ageImageView"
-        app:layout_constraintStart_toStartOf="@+id/ageImageView"
-        app:layout_constraintTop_toBottomOf="@+id/ageImageView" />
-
-
-
-    <ImageView
-        android:id="@+id/weightImageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="370dp"
-        android:layout_marginRight="-100dp"
-        android:src="@drawable/weight"
-        android:background="@android:color/transparent"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="450dp"
-        android:layout_marginRight="-100dp"
-        android:background="@android:color/transparent"
-        android:text="(kg)"
-        android:textColor="@color/blue"
-        android:textSize="25sp"/>
 
     <!--
         <EditText
@@ -208,31 +215,6 @@
             android:padding="10dp" />
 
     -->
-    <NumberPicker
-        android:id="@+id/weightPick"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginLeft="275dp"
-        android:background="#f2d596"
-        app:layout_constraintEnd_toEndOf="@+id/weightImageView"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="@+id/weightImageView"
-        app:layout_constraintTop_toBottomOf="@+id/weightImageView" />
-
-
-
-    <Button
-        android:id="@+id/save_btn2"
-        android:layout_width="130dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#e8940e"
-        android:text="Save"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        />
 
 
 </FrameLayout>

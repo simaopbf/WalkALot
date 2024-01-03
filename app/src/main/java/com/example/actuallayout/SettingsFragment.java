@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
@@ -116,6 +117,23 @@ public class SettingsFragment extends Fragment {
         weightPick = view.findViewById(R.id.weightPick);
         heightPick = view.findViewById(R.id.heightPick);
         agePick = view.findViewById(R.id.agePick);
+        RadioGroup rg = (RadioGroup) view.findViewById(R.id.genderPick);
+
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId==R.id.male_rbtn) {
+                    Gender="Male";
+                }
+                else if(checkedId==R.id.female_rbtn) {
+                    Gender="Female";
+                }
+                else if(checkedId==R.id.other_rbtn){
+                    Gender= "Other";
+                }
+               
+            }
+        });
         save_btn2 = view.findViewById(R.id.save_btn2);
 
         weightPick.setMinValue(30);
@@ -139,7 +157,6 @@ public class SettingsFragment extends Fragment {
                 weightInp = newValue;
                 WEIGHT = String.valueOf(weightInp);
                 Log.d("verificarerro weight", "id:" + WEIGHT);
-
             }
         });
 
@@ -188,12 +205,11 @@ public class SettingsFragment extends Fragment {
         if (mUserId != -1) {
             Log.d("verificarerro", "id:" + mUserId);
             // Retrieve the values from NumberPickers or other UI elements
-            String genderInp = "Male"; // Replace with your logic to get the gender
-            GENDER = genderInp;
+
 
 
             // Update the user settings in the database
-            long rowsAffected = dbHelper.updateSettings(mUserId,GENDER, heightInp, weightInp, ageInp);
+            long rowsAffected = dbHelper.updateSettings(mUserId,Gender, heightPick.getValue(), weightPick.getValue(), agePick.getValue());
 
             if (rowsAffected > 0) {
                 // Settings updated successfully
