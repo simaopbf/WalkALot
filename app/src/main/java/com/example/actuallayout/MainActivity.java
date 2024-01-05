@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("verificarerromain", "id:" + mUserId);
 
-        // Pass userId to the initial fragment (HomeFragment in this case)
+        // Pass userId to the all fragments
         replaceFragment(HomeFragment.newInstance(mParam1, mParam2, mUserId));
         replaceFragment(SettingsFragment.newInstance(mParam1, mParam2, mUserId));
-       // replaceFragment(StatisticsFragment.newInstance(mParam1, mParam2, mUserId));
-        //replaceFragment(ProfileFragment.newInstance(mParam1, mParam2, mUserId));
-       // replaceFragment(HomeFragment.newInstance(mParam1, mParam2, mUserId));
+        replaceFragment(StatisticsFragment.newInstance(mParam1, mParam2, mUserId));
+        replaceFragment(ProfileFragment.newInstance(mParam1, mParam2, mUserId));
+        replaceFragment(CalendarFragment.newInstance(mParam1, mParam2, mUserId));
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(  HomeFragment.newInstance(mParam1,mParam2,mUserId));
 
             } else if (item.getItemId()==R.id.statistics) {
-                replaceFragment(new StatisticsFragment());
+                replaceFragment( StatisticsFragment.newInstance(mParam1,mParam2,mUserId));
 
             } else if (item.getItemId()==R.id.profile) {
-                replaceFragment(new ProfileFragment());
+                replaceFragment(ProfileFragment.newInstance(mParam1,mParam2,mUserId));
 
             }else if (item.getItemId()==R.id.Calendar) {
-                replaceFragment(new CalendarFragment());
+                replaceFragment(CalendarFragment.newInstance(mParam1,mParam2,mUserId));
 
             }else if (item.getItemId()==R.id.settings) {
                 replaceFragment( SettingsFragment.newInstance(mParam1,mParam2,mUserId));

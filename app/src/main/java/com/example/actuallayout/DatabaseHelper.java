@@ -21,8 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the user table
-        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, gender TEXT, height INTEGER, age INTEGER, weight INTEGER)");
-        db.execSQL("CREATE TABLE Data(id INTEGER PRIMARY KEY AUTOINCREMENT, steps INTEGER, cal REAL , dist INTEGER, time INTEGER, date TEXT UNIQUE)"); //hour INTEGER PRIMARY KEY AUTOINCREMENT, energyE REAL
+        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, gender TEXT, height INTEGER, age INTEGER, weight INTEGER, stepGoal INTEGER, calGoal INTEGER, timeGoal INTEGER, distGoal INTEGER)");        db.execSQL("CREATE TABLE Data(id INTEGER PRIMARY KEY AUTOINCREMENT, steps INTEGER, cal REAL , dist INTEGER, time INTEGER, date TEXT UNIQUE)"); //hour INTEGER PRIMARY KEY AUTOINCREMENT, energyE REAL
         db.execSQL("CREATE TABLE ACCDataTable (id INTEGER PRIMARY KEY AUTOINCREMENT, x_axis INTEGER, y_axis INTEGER, z_axis INTEGER, timestamp INTEGER)");
         // Insert default users
         db.execSQL("INSERT INTO users (username, password) VALUES ('user1', 'pass1')");
@@ -78,10 +77,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         // Close the database connection
-        db.close();
 
         return rowsAffected;
     }
+
+    public long updateProfile(long Id,int steps, int cals, int time, int distGoal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("stepGoal", steps);
+        values.put("calGoal", cals);
+        values.put("timeGoal", time);
+        values.put("distGoal", distGoal);
+
+        // Insert the new user into the database
+        long rowsAffected = db.update("users", values, "id = ?",new String[]{String.valueOf(Id)});
+
+
+        return rowsAffected;
+    }
+
 
     // Add ACC data to the database
     public long addACCData(BioLib.DataACC dataACC) {

@@ -82,6 +82,38 @@ public class CalendarFragment extends Fragment {
     CalendarView calendarView;
     Calendar calendar;
     TextView textViewSelectedDate;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USER_ID = "userId";
+    private String mParam1;
+    private String mParam2;
+    private long mUserId; // Store the user ID received from SignUpActivity
+
+
+    public static CalendarFragment newInstance(String param1, String param2, long userId) {
+        CalendarFragment fragment = new CalendarFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_USER_ID, userId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+            mUserId = getArguments().getLong(ARG_USER_ID);
+        } else {
+            // Handle the case where user ID is not provided
+            // You may want to show an error message or navigate to a different screen
+
+            // mUserId = mUserId;
+
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

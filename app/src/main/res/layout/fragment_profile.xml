@@ -30,165 +30,69 @@
         android:background="@android:color/transparent"
         android:src="@drawable/goalsicon" />
 
-    <EditText
-        android:id="@+id/stepsEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="180dp"
-        android:layout_marginTop="220dp"
-        android:background="#ECEEE8"
-        android:hint="STEPS"
-        android:inputType="number"
-        android:text="10000"
-        android:textSize="25sp"
-        android:padding="10dp" />
-
 
     <ImageView
         android:id="@+id/stepsImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="250dp"
         android:src="@drawable/steps" />
 
-
-
-    <ImageView
-        android:id="@+id/plusSteps"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/plus"
-        android:layout_marginTop="220dp"
-        android:layout_marginRight="30dp"
-        android:layout_gravity="right"/>
-
-    <ImageView
-        android:id="@+id/minusSteps"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="220dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:src="@drawable/minus"
-        />
-
-    <EditText
-        android:id="@+id/KcalEditText"
+    <NumberPicker
+        android:id="@+id/stepGoal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="190dp"
-        android:layout_marginTop="320dp"
-        android:background="#ECEEE8"
-        android:hint="KCAL"
-        android:inputType="number"
-        android:text="---"
-        android:textSize="25sp"
-        android:padding="10dp" />
+        android:layout_height="140dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="300dp"
+        android:background="#f2d596" />
 
     <ImageView
         android:id="@+id/KcalImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="140dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginLeft="225dp"
+        android:layout_marginTop="250dp"
         android:src="@drawable/kcal" />
 
-    <ImageView
-        android:id="@+id/plusKcal"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/plus"
-        android:layout_marginTop="320dp"
-        android:layout_marginRight="30dp"
-        android:layout_gravity="right"/>
-
-    <ImageView
-        android:id="@+id/minusKcal"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="320dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:src="@drawable/minus" />
-
-    <EditText
-        android:id="@+id/distEditText"
+    <NumberPicker
+        android:id="@+id/calsGoal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="420dp"
-        android:background="#ECEEE8"
-        android:hint="DISTANCE(KM)"
-        android:text="---"
-        android:inputType="number"
-        android:textSize="25sp"
-        android:padding="10dp" />
+        android:layout_height="140dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="300dp"
+        android:background="#f2d596" />
 
     <ImageView
         android:id="@+id/distImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="85dp"
-        android:layout_marginTop="420dp"
+        android:layout_marginLeft="225dp"
+        android:layout_marginTop="490dp"
         android:src="@drawable/distance" />
 
-    <ImageView
-        android:id="@+id/plusDist"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/plus"
-        android:layout_marginTop="420dp"
-        android:layout_marginRight="30dp"
-        android:layout_gravity="right"/>
-
-    <ImageView
-        android:id="@+id/minusDist"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="420dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:src="@drawable/minus" />
-
-    <EditText
-        android:id="@+id/timeEditText"
+    <NumberPicker
+        android:id="@+id/distGoal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:layout_marginTop="520dp"
-        android:background="#ECEEE8"
-        android:hint="TIME(MIN)"
-        android:text="---"
-        android:inputType="number"
-        android:textSize="25sp"
-        android:padding="10dp" />
+        android:layout_height="140dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="550dp"
+        android:background="#f2d596" />
 
     <ImageView
         android:id="@+id/timeImageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="105dp"
-        android:layout_marginTop="520dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="490dp"
         android:src="@drawable/time" />
-
-    <ImageView
-        android:id="@+id/plusTime"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/plus"
-        android:layout_marginTop="520dp"
-        android:layout_marginRight="30dp"
-        android:layout_gravity="right"/>
-
-    <ImageView
-        android:id="@+id/minusTime"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="520dp"
-        android:layout_gravity="left"
-        android:layout_marginLeft="30dp"
-        android:src="@drawable/minus" />
+    <NumberPicker
+        android:id="@+id/timeGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="550dp"
+        android:background="#f2d596" />
 
     <TextView
         android:id="@+id/TDEE"

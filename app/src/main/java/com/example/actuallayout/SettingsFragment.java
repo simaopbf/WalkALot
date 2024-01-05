@@ -192,7 +192,7 @@ public class SettingsFragment extends Fragment {
                 else
                 {tdee = (int) Math.round((tdee - 161) * 1.15);}
 
-                loadData();
+                //loadData();
             }
         });
 
@@ -224,7 +224,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    public void loadData(){
+    /*public void loadData(){
 
         // Load config shared preferences
 
@@ -241,7 +241,7 @@ public class SettingsFragment extends Fragment {
         heightPick.setValue(Height);
 
 
-    }
+    }*/
 }
 
 
