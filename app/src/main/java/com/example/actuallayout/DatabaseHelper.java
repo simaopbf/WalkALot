@@ -12,7 +12,7 @@ import Bio.Library.namespace.BioLib;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "WalkALot.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Create the user table
         db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, gender TEXT, height INTEGER, age INTEGER, weight INTEGER)");
         db.execSQL("CREATE TABLE Data(id INTEGER PRIMARY KEY AUTOINCREMENT, steps INTEGER, cal REAL , dist INTEGER, time INTEGER, date TEXT UNIQUE)"); //hour INTEGER PRIMARY KEY AUTOINCREMENT, energyE REAL
-
+        db.execSQL("CREATE TABLE ACCDataTable (id INTEGER PRIMARY KEY AUTOINCREMENT, x_axis INTEGER, y_axis INTEGER, z_axis INTEGER, timestamp INTEGER)");
         // Insert default users
         db.execSQL("INSERT INTO users (username, password) VALUES ('user1', 'pass1')");
         db.execSQL("INSERT INTO users (username, password) VALUES ('user2', 'pass2')");
@@ -97,7 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long newRowId = db.insert("ACCDataTable", null, values);
 
         // Close the database connection
-        db.close();
+       // db.close();
 
         // Return the row ID or -1 if the insertion failed
         return newRowId;
