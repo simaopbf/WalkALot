@@ -124,7 +124,14 @@ public class CalendarFragment extends Fragment {
         textViewSelectedDate = view.findViewById(R.id.textViewSelectedDate);
         calendar = Calendar.getInstance();
 
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        calendarView.setDate(calendar.getTimeInMillis(), true, true);
 
+        // Display the current date in the TextView
+        String currentDate = currentDay + "/" + (currentMonth + 1) + "/" + currentYear;
+        textViewSelectedDate.setText(currentDate);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
