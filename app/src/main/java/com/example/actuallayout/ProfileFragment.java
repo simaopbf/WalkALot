@@ -29,10 +29,10 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_USER_ID = "userId";
     public static final String GOALS_PREFS = "goalsPrefs";
-    public static final String STEPS_GOAL = "stepsPrefs";
-    public static final String CAL_GOAL = "calPrefs";
-    public static final String TIME_GOAL= "timePrefs";
-    public static final String DIST_GOAL = "distPrefs";
+    public static String STEPS_GOAL = "stepsPrefs"; //tirei final
+    public static String CAL_GOAL = "calPrefs"; //tirei final
+    public static String TIME_GOAL= "timePrefs"; //tirei final
+    public static String DIST_GOAL = "distPrefs"; //tirei final
     public static final String TIME_GOAL_U = "timeUPrefs";
     public static final String DIST_GOAL_U = "distUPrefs";
 
@@ -129,21 +129,85 @@ public class ProfileFragment extends Fragment {
         timeGoal = view.findViewById(R.id.timeGoal);
        // save_btn1 = view.findViewById(R.id.save_btn1);
 
+
+
         stepGoal.setMinValue(0);
         stepGoal.setMaxValue(200000);
-        stepGoal.setValue(10000);
+        //stepGoal.setValue(10000);
+        SharedPreferences stepGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedStepGoal = stepGoalPreferences.getInt(STEPS_GOAL, 10000);
+        stepGoal.setValue(savedStepGoal);
+
+        stepGoal.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker stepGoal, int oldValue, int newValue) {
+
+                stepsInp = newValue;
+                STEPS_GOAL = String.valueOf(stepsInp);
+                SharedPreferences.Editor editor = stepGoalPreferences.edit();
+                editor.putInt(STEPS_GOAL, newValue);
+                editor.apply();
+            }
+        });
+
+
 
         calsGoal.setMinValue(0);
         calsGoal.setMaxValue(20000);
-        calsGoal.setValue(500);
+        //calsGoal.setValue(500);
+        SharedPreferences calGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedCalGoal = calGoalPreferences.getInt(CAL_GOAL, 500);
+        calsGoal.setValue(savedCalGoal);
+
+        calsGoal.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker calsGoal, int oldValue, int newValue) {
+
+                calsInp = newValue;
+                CAL_GOAL = String.valueOf(calsInp);
+                SharedPreferences.Editor editor = calGoalPreferences.edit();
+                editor.putInt(CAL_GOAL, newValue);
+                editor.apply();
+            }
+        });
 
         distGoal.setMinValue(0);
         distGoal.setMaxValue(200000);
-        distGoal.setValue(7000);
+        //distGoal.setValue(7000);
+        SharedPreferences distGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedDistGoal = distGoalPreferences.getInt(DIST_GOAL, 7000);
+        distGoal.setValue(savedDistGoal);
+
+        distGoal.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker distGoal, int oldValue, int newValue) {
+
+                distInp = newValue;
+                DIST_GOAL = String.valueOf(distInp);
+                SharedPreferences.Editor editor = distGoalPreferences.edit();
+                editor.putInt(DIST_GOAL, newValue);
+                editor.apply();
+            }
+        });
 
         timeGoal.setMinValue(0);
         timeGoal.setMaxValue(1440);
-        timeGoal.setValue(7000);
+        //timeGoal.setValue(7000);
+        SharedPreferences timeGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedTimeGoal = timeGoalPreferences.getInt(TIME_GOAL, 7000);
+        timeGoal.setValue(savedTimeGoal);
+
+        timeGoal.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker timeGoal, int oldValue, int newValue) {
+
+                timeInp = newValue;
+                TIME_GOAL = String.valueOf(timeInp);
+                SharedPreferences.Editor editor = timeGoalPreferences.edit();
+                editor.putInt(TIME_GOAL, newValue);
+                editor.apply();
+            }
+        });
 
         /*stepMinus = view.findViewById(R.id.minusSteps);
         stepPlus  = view.findViewById(R.id.plusSteps);

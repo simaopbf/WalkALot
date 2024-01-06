@@ -17,14 +17,14 @@
         android:layout_marginTop="10dp"
         android:text="Daily Goals"
         android:textColor="@color/blue"
-        android:textSize="45sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         />
 
     <ImageView
         android:id="@+id/goalsImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="70dp"
         android:background="@android:color/transparent"
@@ -35,63 +35,64 @@
         android:id="@+id/stepsImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="170dp"
         android:src="@drawable/steps" />
 
     <NumberPicker
         android:id="@+id/stepGoal"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="230dp"
         android:background="#f2d596" />
 
     <ImageView
         android:id="@+id/KcalImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="225dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="170dp"
         android:src="@drawable/kcal" />
 
     <NumberPicker
         android:id="@+id/calsGoal"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginLeft="245dp"
+        android:layout_marginTop="230dp"
         android:background="#f2d596" />
 
     <ImageView
         android:id="@+id/distImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="225dp"
-        android:layout_marginTop="490dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="400dp"
         android:src="@drawable/distance" />
 
     <NumberPicker
         android:id="@+id/distGoal"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="550dp"
+        android:layout_marginLeft="245dp"
+        android:layout_marginTop="460dp"
         android:background="#f2d596" />
 
     <ImageView
         android:id="@+id/timeImageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="490dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="400dp"
         android:src="@drawable/time" />
+
     <NumberPicker
         android:id="@+id/timeGoal"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="550dp"
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="460dp"
         android:background="#f2d596" />
 
     <TextView

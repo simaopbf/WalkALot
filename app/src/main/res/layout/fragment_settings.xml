@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="User Settings"
         android:textColor="@color/blue"
-        android:textSize="45sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         />
 
@@ -56,11 +56,14 @@
             android:layout_height="wrap_content"
             android:text="Female" />
 
+        <!--
+
         <RadioButton
             android:id="@+id/other_rbtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Other" />
+            -->
     </RadioGroup>
 
     <TextView
@@ -150,16 +153,6 @@
         app:layout_constraintStart_toStartOf="@+id/weightImageView"
         app:layout_constraintTop_toBottomOf="@+id/weightImageView" />
 
-    <Button
-        android:id="@+id/save_btn2"
-        android:layout_width="130dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#e8940e"
-        android:text="Save"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
 
     <ImageView
         android:id="@+id/heightImageView"
@@ -170,6 +163,18 @@
         android:layout_marginRight="100dp"
         android:background="@android:color/transparent"
         android:src="@drawable/height" />
+
+
+    <Button
+        android:id="@+id/save_btn2"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#e8940e"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
 
     <!--
     <EditText

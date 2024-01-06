@@ -128,27 +128,38 @@ public class SettingsFragment extends Fragment {
                 else if(checkedId==R.id.female_rbtn) {
                     Gender="Female";
                 }
-                else if(checkedId==R.id.other_rbtn){
-                    Gender= "Other";
-                }
-               
+
             }
         });
         save_btn2 = view.findViewById(R.id.save_btn2);
 
         weightPick.setMinValue(30);
         weightPick.setMaxValue(200);
-        weightPick.setValue(60);
+        //weightPick.setValue(60);
+
+        // Load the previously selected age from SharedPreferences -add
+        SharedPreferences weightPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedWeight = weightPreferences.getInt(WEIGHT, 60);
+        weightPick.setValue(savedWeight);
+
 
         heightPick.setMinValue(100);
         heightPick.setMaxValue(200);
-        heightPick.setValue(150);
+        //heightPick.setValue(150);
+
+        SharedPreferences heightPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedHeight = heightPreferences.getInt(HEIGHT, 150);
+        heightPick.setValue(savedHeight);
 
 
         agePick.setMinValue(10);
         agePick.setMaxValue(100);
-        agePick.setValue(25);
+        //agePick.setValue(25);
 
+
+        SharedPreferences agePreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        int savedAge = agePreferences.getInt(AGE, 25);
+        agePick.setValue(savedAge);
 
         weightPick.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -157,25 +168,36 @@ public class SettingsFragment extends Fragment {
                 weightInp = newValue;
                 WEIGHT = String.valueOf(weightInp);
                 Log.d("verificarerro weight", "id:" + WEIGHT);
+
+                SharedPreferences.Editor editor = weightPreferences.edit();
+                editor.putInt(WEIGHT, newValue);
+                editor.apply();
             }
         });
-
-
 
         heightPick.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker heightPick, int oldValue, int newValue) {
                 heightInp = newValue;
                 HEIGHT= String.valueOf(heightInp);
+
+                SharedPreferences.Editor editor = heightPreferences.edit();
+                editor.putInt(HEIGHT, newValue);
+                editor.apply();
             }
         });
-
 
         agePick.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker agePick, int oldValue, int newValue) {
                 ageInp = newValue;
                 AGE = String.valueOf(ageInp);
+
+                // Save the newly selected age in SharedPreferences -add
+                SharedPreferences.Editor editor = agePreferences.edit();
+                editor.putInt(AGE, newValue);
+                editor.apply();
+
             }
         });
 
