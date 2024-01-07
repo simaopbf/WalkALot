@@ -21,11 +21,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the user table
-        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, gender TEXT, height INTEGER, age INTEGER, weight INTEGER, stepGoal INTEGER, calGoal INTEGER, timeGoal INTEGER, distGoal INTEGER)");        db.execSQL("CREATE TABLE Data(id INTEGER PRIMARY KEY AUTOINCREMENT, steps INTEGER, cal REAL , dist INTEGER, time INTEGER, date TEXT UNIQUE)"); //hour INTEGER PRIMARY KEY AUTOINCREMENT, energyE REAL
+        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, gender TEXT, height INTEGER, age INTEGER, weight INTEGER, stepGoal INTEGER, calGoal INTEGER, timeGoal INTEGER, distGoal INTEGER)");
+        db.execSQL("CREATE TABLE Data(id INTEGER PRIMARY KEY AUTOINCREMENT, steps INTEGER, cal REAL , dist INTEGER, time INTEGER, date TEXT UNIQUE)"); //hour INTEGER PRIMARY KEY AUTOINCREMENT, energyE REAL
         db.execSQL("CREATE TABLE ACCDataTable (id INTEGER PRIMARY KEY AUTOINCREMENT, x_axis INTEGER, y_axis INTEGER, z_axis INTEGER, timestamp INTEGER)");
         // Insert default users
         db.execSQL("INSERT INTO users (username, password) VALUES ('user1', 'pass1')");
         db.execSQL("INSERT INTO users (username, password) VALUES ('user2', 'pass2')");
+
+        db.execSQL("INSERT INTO Data (steps, cal, dist, time, date) VALUES (100, 20, 50, 1, '8/1/2024')");
         // Add more default users as needed
     }
 
@@ -152,6 +155,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAll() {
         return (getReadableDatabase().rawQuery("SELECT steps, cal, dist, time, date FROM Data GROUP BY date", null));
     }
+
+
+
 
 }
 
