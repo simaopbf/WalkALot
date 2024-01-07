@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (newRowId != -1) {
                     Toast.makeText(SignUpActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
                     // Pass userId to MainActivity
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     intent.putExtra("userId", newRowId);
                     startActivity(intent);
                 } else {

@@ -24,6 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ActualLayout"
         tools:targetApi="31">
+        <provider
+            android:name=".MyContentProvider"
+            android:authorities="com.example.actuallayout.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -44,6 +49,7 @@
 
         <service
             android:name=".StepCounterService"
+            android:enabled="true"
             android:exported="false"> <!-- Change this to false if not needed to be exported -->
         </service>
 

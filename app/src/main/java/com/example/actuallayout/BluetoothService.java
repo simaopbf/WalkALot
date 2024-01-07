@@ -172,12 +172,12 @@ public class BluetoothService extends AppCompatActivity {
         mainButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-        // Start MainActivity and pass the user ID
-        Intent intent = new Intent(BluetoothService.this, MainActivity.class);
-        // Retrieve userId from Intent
-        mUserId = getIntent().getLongExtra("userId", -1);
-        intent.putExtra("userId", mUserId);
-        startActivity(intent);}
+                // Start MainActivity and pass the user ID
+                Intent intent = new Intent(BluetoothService.this, MainActivity.class);
+                // Retrieve userId from Intent
+                mUserId = getIntent().getLongExtra("userId", -1);
+                intent.putExtra("userId", mUserId);
+                startActivity(intent);}
             });
     }
 
@@ -289,7 +289,7 @@ public class BluetoothService extends AppCompatActivity {
                     }
 
                     textACC.setText("ACC [" + accConf + "]:  X: " + dataACC.X + "  Y: " + dataACC.Y + "  Z: " + dataACC.Z);
-                    Log.d(TAG, "MESSAGE_ACC_UPDATED - DataACC received: " + dataACC.X + ", " + dataACC.Y + ", " + dataACC.Z);
+                    //Log.d(TAG, "MESSAGE_ACC_UPDATED - DataACC received: " + dataACC.X + ", " + dataACC.Y + ", " + dataACC.Z);
 
                     break;
 
@@ -299,7 +299,7 @@ public class BluetoothService extends AppCompatActivity {
 
                 case BioLib.MESSAGE_ACC_UPDATED:
                     dataACC = (BioLib.DataACC)msg.obj;
-                    Log.d(TAG, "MESSAGE_ACC_UPDATED - DataACC received: " + dataACC.X + ", " + dataACC.Y + ", " + dataACC.Z);
+                    //Log.d(TAG, "MESSAGE_ACC_UPDATED - DataACC received: " + dataACC.X + ", " + dataACC.Y + ", " + dataACC.Z);
                     dbHelper.addACCData(dataACC);
                     //dataReady();
                     break;

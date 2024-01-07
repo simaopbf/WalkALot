@@ -6,16 +6,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 import Bio.Library.namespace.BioLib;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private Context context;
+    private static final String TAG = "DBHelper";
     private static final String DATABASE_NAME = "WalkALot.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -46,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS users");
         db.execSQL("DROP TABLE IF EXISTS Data");
+        db.execSQL("DROP TABLE IF EXISTS ACCDataTable");
         onCreate(db);
     }
 
@@ -124,8 +129,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long newRowId = db.insert("ACCDataTable", null, values);
 
         // Close the database connection
-       // db.close();
+        // db.close();
+        // Use the content resolver to insert data into the ACCDataTable
+        Uri uri = MyContentProvider.CONTENT_URI;
+        Uri insertedUri = context.getContentResolver().insert(uri, values);
 
+        if (insertedUri != null) {
+            // Data inserted successfully
+            //     Log.d(TAG, "Data inserted successfully. Uri: " + insertedUri);
+        } else {
+            // Failed to insert data
+            Log.e(TAG, "Failed to insert data into ACCDataTable");
+        }
         // Return the row ID or -1 if the insertion failed
         return newRowId;
     }

@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("verificarerromain", "id:" + mUserId);
 
+        // Start the StepCounterService
+        startService(new Intent(this, StepCounterService.class));
+
         // Pass userId to the all fragments
         replaceFragment(HomeFragment.newInstance(mParam1, mParam2, mUserId));
         replaceFragment(SettingsFragment.newInstance(mParam1, mParam2, mUserId));
