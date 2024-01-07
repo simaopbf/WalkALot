@@ -87,8 +87,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         } finally {
-            cursor.close();
-            sqLiteDatabase.close();
+            //cursor.close();
+            //sqLiteDatabase.close();
         }
 
         return result.toString();

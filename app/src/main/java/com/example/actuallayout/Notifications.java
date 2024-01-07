@@ -35,15 +35,5 @@ public class Notifications {
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
-    public static void checkAndNotifyStepsGoal(Context context, long userId) {
-        // Retrieve steps goal and steps for the current date from your database
-        int stepsGoal = // Retrieve steps goal for the user with userId
-        int stepsForCurrentDate = // Retrieve steps for the current date and user with userId
 
-        // Check if the steps taken are greater than the goal
-        if (stepsForCurrentDate >= stepsGoal) {
-            // Show notification if the goal is achieved
-            showNotification(context, "Steps Goal Achieved!", "Congratulations! You've reached your steps goal for today.");
-        }
-    }
 }

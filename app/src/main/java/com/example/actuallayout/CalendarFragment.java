@@ -112,7 +112,7 @@ public class CalendarFragment extends Fragment {
 
         // Use a Cursor to retrieve data from the database
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
-                "SELECT steps, cal, dist FROM Data WHERE date = ?", new String[]{selectedDate});
+                "SELECT SUM(steps) AS steps, SUM(cal) AS cal, SUM(dist) AS dist FROM Data WHERE date = ?", new String[]{selectedDate});
 
         try {
             // Check if the cursor is not null and move to the first row

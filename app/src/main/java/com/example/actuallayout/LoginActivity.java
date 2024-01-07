@@ -135,8 +135,8 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean result = cursor.getCount() > 0;
 
-        cursor.close();
-        db.close();
+        //cursor.close();
+        //db.close();
 
         return result;
     }

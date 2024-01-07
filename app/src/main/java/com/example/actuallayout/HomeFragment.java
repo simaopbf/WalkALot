@@ -114,10 +114,10 @@ public class HomeFragment extends Fragment {
                 }
             } while (cursor.moveToNext());
 
-            cursor.close();
+            //cursor.close();
         }
 
-        databaseHelper.close();
+        //databaseHelper.close();
 
         return view;
     }
