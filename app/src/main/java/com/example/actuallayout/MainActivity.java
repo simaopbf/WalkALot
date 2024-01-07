@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(  HomeFragment.newInstance(mParam1,mParam2,mUserId));
 
             } else if (item.getItemId()==R.id.statistics) {
-                replaceFragment( StatisticsFragment.newInstance(mParam1,mParam2,mUserId));
+                replaceFragment(StatisticsFragment.newInstance(mParam1,mParam2,mUserId));
 
             } else if (item.getItemId()==R.id.profile) {
                 replaceFragment(ProfileFragment.newInstance(mParam1,mParam2,mUserId));
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(CalendarFragment.newInstance(mParam1,mParam2,mUserId));
 
             }else if (item.getItemId()==R.id.settings) {
-                replaceFragment( SettingsFragment.newInstance(mParam1,mParam2,mUserId));
+                replaceFragment(SettingsFragment.newInstance(mParam1,mParam2,mUserId));
             }
 
 

@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CalendarFragment extends Fragment {
 
@@ -91,6 +92,7 @@ public class CalendarFragment extends Fragment {
         // Display the current date in the TextView
         String currentDate = currentDay + "/" + (currentMonth + 1) + "/" + currentYear;
         textViewSelectedDate.setText(currentDate);
+        fetchDataForSelectedDate(currentDate);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -110,9 +112,12 @@ public class CalendarFragment extends Fragment {
         // Assuming you have a DatabaseHelper instance named dbHelper
         DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
 
+        long userId = LoginActivity.getSavedUserId((AppCompatActivity) requireActivity());
+
         // Use a Cursor to retrieve data from the database
-        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
-                "SELECT SUM(steps) AS steps, SUM(cal) AS cal, SUM(dist) AS dist FROM Data WHERE date = ?", new String[]{selectedDate});
+        String query = "SELECT SUM(steps) AS steps, SUM(cal) AS cal, SUM(dist) AS dist FROM Data WHERE date = ? AND user_id = ?";
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, new String[]{selectedDate, String.valueOf(userId)});
+
 
         try {
             // Check if the cursor is not null and move to the first row
@@ -124,15 +129,14 @@ public class CalendarFragment extends Fragment {
 
                 // Display the retrieved values in your UI elements (e.g., TextViews)
                 // For example:
+
+                // Assuming your CalendarFragment is in the same package as LoginActivity
+
+
+
                 textViewSelectedDateSteps.setText("Steps: " + steps);
                 textViewSelectedDatekms.setText("Kms: " + distance);
                 textViewSelectedDateKcal.setText("Calories: " + calories);
-            } else {
-                // Handle the case where there is no data for the selected date
-                // Clear or set default values in your UI elements
-                textViewSelectedDateSteps.setText("Steps: N/A");
-                textViewSelectedDatekms.setText("Kms: N/A");
-                textViewSelectedDateKcal.setText("Calories: N/A");
             }
         } catch (Exception e) {
             // Log any exception that occurs
