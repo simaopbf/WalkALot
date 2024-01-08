@@ -6,16 +6,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import Bio.Library.namespace.BioLib;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private Context context;
+    private static final String TAG = "DBHelper";
     private static final String DATABASE_NAME = "WalkALot.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -46,23 +51,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS users");
         db.execSQL("DROP TABLE IF EXISTS Data");
+        db.execSQL("DROP TABLE IF EXISTS ACCDataTable");
         onCreate(db);
     }
 
-    public long insertUser(String username, String password) {
+
+    public long insertUser(String username, String password, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("username", username);
-        values.put("password", password);
 
-        // Insert the new user into the database
-        long newRowId = db.insert("users", null, values);
+        if(isUsernameAvailable(username)==false){
+            ContentValues values = new ContentValues();
+            values.put("username", username);
+            values.put("password", password);
 
-        // Close the database connection
-        //db.close();
+            // Insert the new user into the database
+            long newRowId = db.insert("users", null, values);
+            // Close the database connection
+            db.close();
+            return newRowId;
 
-        return newRowId;
+        } else {
+            // Username is not available
+            Log.e("DatabaseHelper", "Username not available: " + username);
+            Toast.makeText(context, "Username already taken. Please pick a different one.", Toast.LENGTH_SHORT).show();
+            return -1;
+        }
     }
+
+    public Boolean isUsernameAvailable(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select * from users where username = ?", new String[]{username});
+        if(cursor.getCount() > 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
     // Insert a new record into the Events data base.
     public long insert(int steps, double cal, int dist, int time, String date) { //String hour, String energyE
@@ -124,8 +149,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long newRowId = db.insert("ACCDataTable", null, values);
 
         // Close the database connection
-       // db.close();
+        // db.close();
+        // Use the content resolver to insert data into the ACCDataTable
+        Uri uri = MyContentProvider.CONTENT_URI;
+        Uri insertedUri = context.getContentResolver().insert(uri, values);
 
+        if (insertedUri != null) {
+            // Data inserted successfully
+            //     Log.d(TAG, "Data inserted successfully. Uri: " + insertedUri);
+        } else {
+            // Failed to insert data
+            Log.e(TAG, "Failed to insert data into ACCDataTable");
+        }
         // Return the row ID or -1 if the insertion failed
         return newRowId;
     }

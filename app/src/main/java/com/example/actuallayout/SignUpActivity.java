@@ -37,12 +37,12 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = newPassword.getText().toString();
 
                 // Insert the new user into the database
-                long newRowId = dbHelper.insertUser(username, password);
+                long newRowId = dbHelper.insertUser(username, password, SignUpActivity.this);
 
                 if (newRowId != -1) {
                     Toast.makeText(SignUpActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
                     // Pass userId to MainActivity
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     intent.putExtra("userId", newRowId);
                     startActivity(intent);
                 } else {

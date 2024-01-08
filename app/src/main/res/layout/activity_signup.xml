@@ -28,6 +28,7 @@
                 android:id="@+id/newUsername"
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
                 android:padding="8dp"
                 android:hint="Username"
                 android:drawableLeft="@drawable/baseline_person_outline_24"
@@ -39,6 +40,7 @@
                 android:id="@+id/newPassword"
                 android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
                 android:padding="8dp"
                 android:hint="Password"
                 android:inputType="textPassword"
@@ -65,6 +67,7 @@
                 android:id="@+id/registerButton"
                 android:textSize="18sp"
                 android:layout_marginTop="30dp"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="@color/lavender"
                 app:cornerRadius = "30dp"/>
 
@@ -74,11 +77,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/loginButtonR"
                 android:text="Already an user? Login"
-                android:layout_gravity="center"
                 android:padding="8dp"
                 android:textSize="14sp"
                 android:textAlignment="center"
                 android:layout_marginTop="8dp"
+                android:layout_gravity="center_horizontal"
                 android:textColor="@color/lavender"
                 android:backgroundTint="@color/white"
                 android:onClick="onLoginButtonClick"/>
@@ -87,4 +90,3 @@
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-

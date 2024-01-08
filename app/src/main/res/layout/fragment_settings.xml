@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SettingsFragment"
-    android:background="#f7e8c8">
+    android:background="@drawable/blue_dark_theme">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -13,168 +13,242 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="User Settings"
-        android:textColor="@color/blue"
-        android:textSize="40sp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         android:textStyle="bold"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.2"/>
 
     <!-- dar a op -->
 
     <!-- avatar? -->
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/genderCardView"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginRight="27.5dp"
+        android:layout_marginLeft="27.5dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:backgroundTint="@color/black"
+        ayout_constraintBottom_toTopOf="@+id/heightCardView"
+        app:layout_constraintVertical_bias="0.1">
 
-    <ImageView
-        android:id="@+id/genderImageView"
+
+        <ImageView
+            android:id="@+id/genderImageView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="60dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/gender" />
+
+        <RadioGroup
+            android:id="@+id/genderPick"
+            android:layout_width="97dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent">
+
+
+            <RadioButton
+                android:id="@+id/male_rbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/female_rbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:textColor="@color/white"/>
+
+            <!--
+
+            <RadioButton
+                android:id="@+id/other_rbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+                -->
+        </RadioGroup>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/heightCardView"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="150dp"
-        android:layout_marginRight="60dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/gender" />
+        android:layout_height="330dp"
+        android:layout_marginTop="290dp"
+        android:layout_marginStart="27.5dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/genderCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ageCardView"
+        app:layout_constraintVertical_bias="0.1">
 
-    <RadioGroup
-        android:id="@+id/genderPick"
-        android:layout_width="97dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="150dp"
+        <ImageView
+            android:id="@+id/heightImageView"
+            android:layout_width="70dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="0dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/height" />
 
-        android:background="#f2d596">
-
-        <RadioButton
-            android:id="@+id/male_rbtn"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Male" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="0dp"
+            android:background="@android:color/transparent"
+            android:text="(cm)"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-        <RadioButton
-            android:id="@+id/female_rbtn"
-            android:layout_width="match_parent"
+        <NumberPicker
+            android:id="@+id/heightPick"
+            android:layout_width="60dp"
+            android:layout_height="160dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="140dp"
+            android:background="#84b1f5"
+
+            app:layout_constraintEnd_toEndOf="@+id/heightImageView"
+            app:layout_constraintStart_toStartOf="@+id/heightImageView"
+            app:layout_constraintTop_toBottomOf="@+id/heightImageView" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ageCardView"
+        android:layout_width="100dp"
+        android:layout_height="330dp"
+        android:layout_marginTop="290dp"
+        android:layout_gravity="center_horizontal"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/heightCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/weightCardView"
+        app:layout_constraintVertical_bias="0.1">
+
+        <ImageView
+            android:id="@+id/ageImageView"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="0dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/age" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="0dp"
+            android:background="@android:color/transparent"
+            android:text="(years)"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-        <!--
+        <NumberPicker
+            android:id="@+id/agePick"
+            android:layout_width="60dp"
+            android:layout_height="160dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="140dp"
+            android:background="#84b1f5"
+            app:layout_constraintEnd_toEndOf="@+id/ageImageView"
+            app:layout_constraintStart_toStartOf="@+id/ageImageView"
+            app:layout_constraintTop_toBottomOf="@+id/ageImageView" />
 
-        <RadioButton
-            android:id="@+id/other_rbtn"
-            android:layout_width="match_parent"
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/weightCardView"
+        android:layout_width="100dp"
+        android:layout_height="330dp"
+        android:layout_marginTop="290dp"
+        android:layout_marginStart="282.5dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/ageCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1">
+
+        <ImageView
+            android:id="@+id/weightImageView"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="0dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/weight" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other" />
-            -->
-    </RadioGroup>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="0dp"
+            android:background="@android:color/transparent"
+            android:text="(kg)"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="440dp"
-        android:layout_marginRight="100dp"
-        android:background="@android:color/transparent"
-        android:text="(cm)"
-        android:textColor="@color/blue"
-        android:textSize="25sp" />
-
-    <NumberPicker
-        android:id="@+id/heightPick"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="490dp"
-        android:background="#f2d596"
-        app:layout_constraintEnd_toEndOf="@+id/heightImageView"
-        app:layout_constraintStart_toStartOf="@+id/heightImageView"
-        app:layout_constraintTop_toBottomOf="@+id/heightImageView" />
-
-    <ImageView
-        android:id="@+id/ageImageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="350dp"
-        android:layout_marginRight="0dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/age" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="440dp"
-        android:layout_marginRight="0dp"
-        android:background="@android:color/transparent"
-        android:text="(years)"
-        android:textColor="@color/blue"
-        android:textSize="25sp" />
-
-    <NumberPicker
-        android:id="@+id/agePick"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_marginLeft="175dp"
-        android:layout_marginTop="490dp"
-        android:background="#f2d596"
-        app:layout_constraintEnd_toEndOf="@+id/ageImageView"
-        app:layout_constraintStart_toStartOf="@+id/ageImageView"
-        app:layout_constraintTop_toBottomOf="@+id/ageImageView" />
-
-    <ImageView
-        android:id="@+id/weightImageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="350dp"
-        android:layout_marginRight="-100dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/weight" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="440dp"
-        android:layout_marginRight="-100dp"
-        android:background="@android:color/transparent"
-        android:text="(kg)"
-        android:textColor="@color/blue"
-        android:textSize="25sp" />
-
-    <NumberPicker
-        android:id="@+id/weightPick"
-        android:layout_width="wrap_content"
-        android:layout_height="140dp"
-        android:layout_marginLeft="275dp"
-        android:layout_marginTop="490dp"
-        android:background="#f2d596"
-        app:layout_constraintEnd_toEndOf="@+id/weightImageView"
-        app:layout_constraintHorizontal_bias="0.517"
-        app:layout_constraintStart_toStartOf="@+id/weightImageView"
-        app:layout_constraintTop_toBottomOf="@+id/weightImageView" />
+        <NumberPicker
+            android:id="@+id/weightPick"
+            android:layout_width="60dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="140dp"
+            android:background="#84b1f5"
+            app:layout_constraintEnd_toEndOf="@+id/weightImageView"
+            app:layout_constraintHorizontal_bias="0.517"
+            app:layout_constraintStart_toStartOf="@+id/weightImageView"
+            app:layout_constraintTop_toBottomOf="@+id/weightImageView" />
 
 
-    <ImageView
-        android:id="@+id/heightImageView"
-        android:layout_width="80dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="350dp"
-        android:layout_marginRight="100dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/height" />
-
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/save_btn2"
         android:layout_width="130dp"
         android:layout_height="60dp"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#e8940e"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#5394f5"
         android:text="Save"
         android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/ageCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <!--
     <EditText
@@ -223,4 +297,3 @@
 
 
 </FrameLayout>
-
