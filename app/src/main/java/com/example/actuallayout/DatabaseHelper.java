@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import Bio.Library.namespace.BioLib;
 
@@ -54,20 +55,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertUser(String username, String password) {
+
+    public long insertUser(String username, String password, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("username", username);
-        values.put("password", password);
 
-        // Insert the new user into the database
-        long newRowId = db.insert("users", null, values);
+        if(isUsernameAvailable(username)==false){
+            ContentValues values = new ContentValues();
+            values.put("username", username);
+            values.put("password", password);
 
-        // Close the database connection
-        //db.close();
+            // Insert the new user into the database
+            long newRowId = db.insert("users", null, values);
+            // Close the database connection
+            db.close();
+            return newRowId;
 
-        return newRowId;
+        } else {
+            // Username is not available
+            Log.e("DatabaseHelper", "Username not available: " + username);
+            Toast.makeText(context, "Username already taken. Please pick a different one.", Toast.LENGTH_SHORT).show();
+            return -1;
+        }
     }
+
+    public Boolean isUsernameAvailable(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select * from users where username = ?", new String[]{username});
+        if(cursor.getCount() > 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 
     // Insert a new record into the Events data base.
     public long insert(int steps, double cal, int dist, int time, String date) { //String hour, String energyE
