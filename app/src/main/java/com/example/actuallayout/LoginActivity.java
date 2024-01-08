@@ -24,8 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseHelper dbHelper;
     Button signUpButton;
 
-    private static final String PREFS_NAME = "MyPrefsFile";
-    private static final String USER_ID_KEY = "userId";
 
 
     @Override
@@ -63,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         // Finish LoginActivity to prevent going back with the back button
                         finish();*/
-                        saveUserId(userId);
+                        //saveUserId(userId);
                         Log.d("LoginActivity", "Login successful for username: " + enteredUsername);
 
                         // Check Bluetooth connection
@@ -166,18 +164,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void saveUserId(long userId) {
-        // Use SharedPreferences to save the user ID
-        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putLong(USER_ID_KEY, userId);
-        editor.apply();
-    }
-
-    public static long getSavedUserId(AppCompatActivity activity) {
-        // Retrieve the saved user ID from SharedPreferences
-        SharedPreferences prefs = activity.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        return prefs.getLong(USER_ID_KEY, -1); // Return -1 if not found
-    }
 
 
 

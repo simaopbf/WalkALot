@@ -112,11 +112,11 @@ public class CalendarFragment extends Fragment {
         // Assuming you have a DatabaseHelper instance named dbHelper
         DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
 
-        long userId = LoginActivity.getSavedUserId((AppCompatActivity) requireActivity());
+
 
         // Use a Cursor to retrieve data from the database
         String query = "SELECT SUM(steps) AS steps, SUM(cal) AS cal, SUM(dist) AS dist FROM Data WHERE date = ? AND user_id = ?";
-        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, new String[]{selectedDate, String.valueOf(userId)});
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, new String[]{selectedDate, String.valueOf(mUserId)});
 
 
         try {
