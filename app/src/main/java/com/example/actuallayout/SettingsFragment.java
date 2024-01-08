@@ -119,6 +119,17 @@ public class SettingsFragment extends Fragment {
         agePick = view.findViewById(R.id.agePick);
         RadioGroup rg = (RadioGroup) view.findViewById(R.id.genderPick);
 
+        // Load the previously selected gender from SharedPreferences
+        SharedPreferences genderPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
+        String savedGender = genderPreferences.getString(GENDER, "Male"); // Default to Male if not found
+
+        // Set the appropriate radio button checked based on the saved gender
+        if (savedGender.equals("Male")) {
+            rg.check(R.id.male_rbtn);
+        } else if (savedGender.equals("Female")) {
+            rg.check(R.id.female_rbtn);
+        }
+
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -227,8 +238,6 @@ public class SettingsFragment extends Fragment {
         if (mUserId != -1) {
             Log.d("verificarerro", "id:" + mUserId);
             // Retrieve the values from NumberPickers or other UI elements
-
-
 
             // Update the user settings in the database
             long rowsAffected = dbHelper.updateSettings(mUserId,Gender, heightPick.getValue(), weightPick.getValue(), agePick.getValue());

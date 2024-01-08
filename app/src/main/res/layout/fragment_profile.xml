@@ -14,12 +14,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center"
         android:layout_marginTop="20dp"
         android:text="Daily Goals"
         android:textColor="#e8faf8"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:layout_gravity="top|center_horizontal"
         />
 
     <!--
@@ -36,7 +36,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="280dp"
         android:layout_height="80dp"
-        android:layout_marginLeft="60dp"
+        android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="90dp"
         android:backgroundTint="@color/black"
         app:cardCornerRadius="20dp"
@@ -46,7 +46,7 @@
             android:id="@+id/TDEEImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="15dp"
             android:src="@drawable/fitnessicon" />
 
@@ -67,7 +67,8 @@
         android:layout_width="120dp"
         android:layout_height="210dp"
         android:layout_marginTop="190dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_gravity="top|start"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
@@ -77,7 +78,7 @@
             android:id="@+id/stepsImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/steps"/>
 
@@ -85,7 +86,7 @@
             android:id="@+id/stepGoal"
             android:layout_width="80dp"
             android:layout_height="110dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
             android:background="#e8faf8" />
 
@@ -95,7 +96,8 @@
         android:layout_width="120dp"
         android:layout_height="210dp"
         android:layout_marginTop="190dp"
-        android:layout_marginLeft="220dp"
+        android:layout_marginEnd="60dp"
+        android:layout_gravity="top|end"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
@@ -105,7 +107,7 @@
             android:id="@+id/KcalImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/kcal" />
 
@@ -113,7 +115,7 @@
             android:id="@+id/calsGoal"
             android:layout_width="80dp"
             android:layout_height="110dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
             android:background="#e8faf8" />
 
@@ -123,8 +125,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="120dp"
         android:layout_height="210dp"
-        android:layout_marginTop="420dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginStart="60dp"
+        android:layout_gravity="center|start"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
@@ -134,7 +137,7 @@
             android:id="@+id/distImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/distance" />
 
@@ -142,7 +145,7 @@
             android:id="@+id/distGoal"
             android:layout_width="80dp"
             android:layout_height="110dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
             android:background="#e8faf8" />
 
@@ -153,8 +156,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="120dp"
         android:layout_height="210dp"
-        android:layout_marginTop="420dp"
-        android:layout_marginLeft="220dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="60dp"
+        android:layout_gravity="center|end"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
@@ -164,7 +168,7 @@
             android:id="@+id/timeImageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/time" />
 
@@ -172,7 +176,7 @@
             android:id="@+id/timeGoal"
             android:layout_width="80dp"
             android:layout_height="110dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
             android:background="#e8faf8" />
 
@@ -183,13 +187,13 @@
         android:id="@+id/save_btn1"
         android:layout_width="130dp"
         android:layout_height="60dp"
-        android:layout_gravity="center|bottom"
+        android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"
         android:backgroundTint="#e8faf8"
         android:text="Save"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:textSize="25sp"
         />
 
 

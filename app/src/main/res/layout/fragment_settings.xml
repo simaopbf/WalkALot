@@ -12,16 +12,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center"
         android:layout_marginTop="30dp"
         android:text="User Settings"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.2"/>
+        android:layout_gravity="top|center_horizontal" />
 
     <!-- dar a op -->
 
@@ -37,7 +33,7 @@
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
-        ayout_constraintBottom_toTopOf="@+id/heightCardView"
+        android:layout_gravity="top|center_horizontal"
         app:layout_constraintVertical_bias="0.1">
 
 
@@ -47,7 +43,7 @@
             android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="60dp"
+            android:layout_marginEnd="60dp"
             android:background="@android:color/transparent"
             android:src="@drawable/gender" />
 
@@ -55,7 +51,7 @@
             android:id="@+id/genderPick"
             android:layout_width="97dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="160dp"
+            android:layout_marginStart="160dp"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent">
 
@@ -94,11 +90,7 @@
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/genderCardView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/ageCardView"
-        app:layout_constraintVertical_bias="0.1">
+        android:layout_gravity="top|start">
 
         <ImageView
             android:id="@+id/heightImageView"
@@ -106,7 +98,7 @@
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:background="@android:color/transparent"
             android:src="@drawable/height" />
 
@@ -115,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="100dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:background="@android:color/transparent"
             android:text="(cm)"
             android:textColor="@color/white"
@@ -125,13 +117,9 @@
             android:id="@+id/heightPick"
             android:layout_width="60dp"
             android:layout_height="160dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="140dp"
-            android:background="#84b1f5"
-
-            app:layout_constraintEnd_toEndOf="@+id/heightImageView"
-            app:layout_constraintStart_toStartOf="@+id/heightImageView"
-            app:layout_constraintTop_toBottomOf="@+id/heightImageView" />
+            android:background="#84b1f5" />
 
     </androidx.cardview.widget.CardView>
 
@@ -156,7 +144,7 @@
             android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:background="@android:color/transparent"
             android:src="@drawable/age" />
 
@@ -165,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="100dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:background="@android:color/transparent"
             android:text="(years)"
             android:textColor="@color/white"
@@ -175,12 +163,9 @@
             android:id="@+id/agePick"
             android:layout_width="60dp"
             android:layout_height="160dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="140dp"
-            android:background="#84b1f5"
-            app:layout_constraintEnd_toEndOf="@+id/ageImageView"
-            app:layout_constraintStart_toStartOf="@+id/ageImageView"
-            app:layout_constraintTop_toBottomOf="@+id/ageImageView" />
+            android:background="#84b1f5"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -189,14 +174,12 @@
         android:layout_width="100dp"
         android:layout_height="330dp"
         android:layout_marginTop="290dp"
+        android:layout_marginEnd="27.5dp"
         android:layout_marginStart="282.5dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
         android:backgroundTint="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/ageCardView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.1">
+        android:layout_gravity="top|end">
 
         <ImageView
             android:id="@+id/weightImageView"
@@ -244,11 +227,7 @@
         android:text="Save"
         android:textColor="@color/white"
         android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/ageCardView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:textStyle="bold"/>
 
     <!--
     <EditText
