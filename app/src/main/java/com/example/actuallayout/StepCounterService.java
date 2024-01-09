@@ -1,5 +1,6 @@
 package com.example.actuallayout;
 
+import static android.content.Intent.getIntent;
 import static com.example.actuallayout.MyContentProvider.TABLE_NAME;
 import static com.example.actuallayout.ProfileFragment.CAL_GOAL;
 import static com.example.actuallayout.ProfileFragment.DIST_GOAL;
@@ -107,7 +108,8 @@ public class StepCounterService extends Service {
     private String TimeU; // U for the string Unit (e.g., h or min)
     private String DistU;
     public static final String CHANNEL_ID2 = "GoalNotification";
-
+    private long userId;
+    private long suserId;
 
     // Binder given to clients
     private final IBinder binder = new LocalBinder();
@@ -143,7 +145,7 @@ public class StepCounterService extends Service {
             double zValue = convertToDouble(zIntValue);
             //Log.d(TAG, "Retrieved values from ACCDataTable. X: " + xValue + ", Y: " + yValue + ", Z: " + zValue);
 
-            calculateData(xValue, yValue, zValue);
+            calculateData(xValue, yValue, zValue, suserId);
         }
     };
 
@@ -158,14 +160,27 @@ public class StepCounterService extends Service {
                 true,
                 accDataObserver
         );
-
+        /*// Retrieve userId from intent (if it was started as a service)
+        Intent intent = getIntent();  // This line is only valid in an activity, not a service
+        long userId = -1;
+        if (intent != null) {
+            userId = intent.getLongExtra("userId", -1);
+            Log.d(TAG, "Received userId in onCreate: " + userId);
+        } else {
+            Log.e(TAG, "Intent is null in onCreate");
+        }
+*/
         // Initialize preferences and goals
         initPreferencesAndGoals();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "StepCounterService onStartCommand");
+        //Log.d(TAG, "StepCounterService onStartCommand");
+        // Retrieve userId from the intent
+        long userId = intent.getLongExtra("userId", -1);
+        //Log.d(TAG, "Received userId in onStartCommand: " + userId);
+        suserId= userId;
         // Remove data retrieval logic from onStartCommand
         // Data retrieval and calculations are now handled by accDataObserver
         return START_STICKY;
@@ -271,12 +286,14 @@ public class StepCounterService extends Service {
 
         //helper.close();
     }
-    private void calculateData(double xValue, double yValue, double zValue) {
+    private void calculateData(double xValue, double yValue, double zValue, long userId) {
         stepCounter(xValue,yValue,zValue);
         calculateKcal();
+        int muser = (int) userId;
+        //Log.d(TAG, "calculateData userId: " + userId);
 
         // Insert data into the database
-        addDataToDatabase(stepCount, kcalTotais, distCount, timeCount, currentTime.toString());
+        addDataToDatabase(stepCount, kcalTotais, distCount, timeCount, currentTime.toString(), muser);
 
         sendDataToActivity(stepCount, kcalTotais, distCount,timeCount, status);
 
@@ -322,30 +339,49 @@ public class StepCounterService extends Service {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void addDataToDatabase(int steps, double kcal, int dist, int time, String date) {
+    private void addDataToDatabase(int steps, double kcal, int dist, int time, String date, int userId) {
         SQLiteDatabase db = helper.getWritableDatabase();
+
+        // Check if a row with the same user_id and date already exists
+        Cursor cursor = db.rawQuery("SELECT * FROM Data WHERE user_id = ? AND date = ?", new String[]{String.valueOf(userId), date});
+        //Log.d(TAG, "addDataToDatabase userId: " + userId);
+
         ContentValues values = new ContentValues();
+        values.put("user_id", userId);
         values.put("steps", steps);
         values.put("cal", kcal);
         values.put("dist", dist);
         values.put("time", time);
         values.put("date", date);
 
-        // Insert the values into the Data table
-        long rowId = db.insert("Data", null, values);
+        if (cursor.moveToFirst()) {
+            // Row with the same user_id and date exists, update the values
+            long rowId = db.update("Data", values, "user_id = ? AND date = ?", new String[]{String.valueOf(userId), date});
 
-        if (rowId != -1) {
-            //Log.d(TAG, "Data inserted successfully");
+            if (rowId != -1) {
+                // Log.d(TAG, "Data updated successfully");
+            } else {
+                Log.e(TAG, "Failed to update data in the database");
+            }
         } else {
-            Log.e(TAG, "Failed to insert data into the database");
+            // No row with the same user_id and date, insert a new row
+            long rowId = db.insert("Data", null, values);
+
+            if (rowId != -1) {
+                // Log.d(TAG, "Data inserted successfully");
+            } else {
+                Log.e(TAG, "Failed to insert data into the database");
+            }
         }
 
-        //db.close();
+        cursor.close();
+        // db.close(); // Don't close the database here, as it may cause issues if the cursor is still in use.
+
     }
 
-        private void adddata() { // Add data to dataset
-            helper.insert(stepCount, kcalTotais, distCount, timeCount, currentTime.toString());
-        }
+    private void adddata() { // Add data to dataset
+        helper.insert(stepCount, kcalTotais, distCount, timeCount, currentTime.toString());
+    }
 
     private void goalsNotification(String message, int icon){
 

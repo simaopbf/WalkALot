@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 mUserId = savedInstanceState.getLong("userId", -1);
             }
         }
-        Log.d("verificarerromain", "id:" + mUserId);
+
 
         // Start the StepCounterService
         startService(new Intent(this, StepCounterService.class));
@@ -79,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-
+        Log.d("verificarerromain", "id:" + mUserId);
+        // Start the StepCounterService
+        Intent serviceIntent = new Intent(this, StepCounterService.class);
+        serviceIntent.putExtra("userId", mUserId);
+        startService(serviceIntent);
     }
 
     private void replaceFragment(Fragment fragment){
