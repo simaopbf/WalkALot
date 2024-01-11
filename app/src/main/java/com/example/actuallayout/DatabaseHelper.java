@@ -241,6 +241,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return objective_value;
     }
+    public int getDistForUserAndDate(long userId, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int dist = 0; // Default value if no match is found
+
+        try {
+            String query = "SELECT dist FROM Data WHERE user_id = ? AND date = ?";
+            String[] selectionArgs = {String.valueOf(userId), date};
+
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+
+
+            if (cursor != null && cursor.moveToFirst()) {
+                dist = cursor.getInt(cursor.getColumnIndex("dist"));
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "getStepsForUserAndDate: Exception", e);
+        }
+
+        return dist;
+    }
+    public int getCalForUserAndDate(long userId, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int cal = 0; // Default value if no match is found
+
+        try {
+            String query = "SELECT cal FROM Data WHERE user_id = ? AND date = ?";
+            String[] selectionArgs = {String.valueOf(userId), date};
+
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+
+
+            if (cursor != null && cursor.moveToFirst()) {
+                cal = cursor.getInt(cursor.getColumnIndex("cal"));
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "getStepsForUserAndDate: Exception", e);
+        }
+
+        return cal;
+    }
+
 
 
 

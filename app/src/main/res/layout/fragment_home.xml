@@ -42,29 +42,65 @@
         android:textColor="@color/white"
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="205dp"
-        android:layout_height="244dp"
-        android:layout_marginTop="350dp"
-        android:textColor="@color/white"
-        android:text="Distance\n\n10Km"
-        android:textSize="30sp"
-        android:gravity="center"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="390dp"
+        android:layout_gravity="center_horizontal"
+        >
+        <TextView
+            android:id="@+id/textViewDistance"
+            android:layout_height="100dp"
+            android:layout_width="205dp"
+            android:text="Distance"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textSize="30dp"
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="205dp"
-        android:layout_height="244dp"
-        android:layout_marginLeft="206dp"
-        android:layout_marginTop="350dp"
-        android:gravity="center"
-        android:text="Kcal\n\n100"
-        android:textColor="@color/white"
-        android:textSize="30sp"
+            />
 
-        />
+        <TextView
+            android:id="@+id/textViewActualDistance"
+            android:layout_height="100dp"
+            android:layout_width="205dp"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/grey_500"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textSize="30dp"
+            />
+
+        <TextView
+            android:id="@+id/textViewCalories"
+            android:layout_width="205dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="205dp"
+            android:text="Calories"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textSize="30dp"
+
+            />
+
+        <TextView
+            android:id="@+id/textViewActualCalories"
+            android:layout_height="100dp"
+            android:layout_width="205dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="205dp"
+            android:textColor="@color/grey_500"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textSize="30dp"
+            />
+
+
+
+    </RelativeLayout>
+
+
     <ProgressBar
         android:id="@+id/home_progress_bar"
         style="@style/CircularProgressBar"

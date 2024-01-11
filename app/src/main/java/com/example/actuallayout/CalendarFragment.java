@@ -135,7 +135,7 @@ public class CalendarFragment extends Fragment {
         return view;
     }
     private String formatDate(Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd 00:00:00 'GMT+00:00' yyyy", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d 00:00:00 'GMT' yyyy", Locale.US);
         return sdf.format(calendar.getTime());
     }
 

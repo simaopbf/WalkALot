@@ -59,6 +59,8 @@ public class HomeFragment extends Fragment {
     private Date currentTime;
     private int fractionGoal;
     private int steps;
+    private int dist;
+    private int cal;
 
     private int targetSteps=1;
 
@@ -107,6 +109,8 @@ public class HomeFragment extends Fragment {
     private ProgressBar homeProgressBar;
     private ObjectAnimator animatebar;
     private TextView stepsTextView;
+    private TextView distTextView;
+    private TextView calTextView;
     //private FrameLayout HomeFragmentLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,7 +132,8 @@ public class HomeFragment extends Fragment {
         currentTime = calendar.getTime();
         // Find TextView by ID
         stepsTextView = view.findViewById(R.id.stepsTextView);
-
+        distTextView = view.findViewById(R.id.textViewActualDistance);
+        calTextView = view.findViewById(R.id.textViewActualCalories);
 
         // Retrieve steps from the database based on the current date
         DatabaseHelper databaseHelper = new DatabaseHelper(requireContext());
@@ -138,8 +143,15 @@ public class HomeFragment extends Fragment {
             do {
                 // String date = cursor.getString(cursor.getColumnIndex("date"));
                 steps = databaseHelper.getStepsForUserAndDate(mUserId,currentTime.toString());
+                dist = databaseHelper.getDistForUserAndDate(mUserId,currentTime.toString());
+                cal = databaseHelper.getCalForUserAndDate(mUserId,currentTime.toString());
 
-                Log.d("stepsverify", "steps" + steps);
+                Log.d("distverify", "dist " + dist);
+                Log.d("distverify", "cal " + cal);
+
+                //Log.d("stepsverify", "muserid " + mUserId);
+                //Log.d("stepsverify", "date " + currentTime.toString());
+                //Log.d("stepsverify", "steps " + steps);
                 break;
 
             } while (cursor.moveToNext());
@@ -149,14 +161,16 @@ public class HomeFragment extends Fragment {
 
         targetSteps= databaseHelper.targetValue(mUserId,"stepGoal");
         stepsTextView.setText( steps + "/"+ targetSteps);
+        distTextView.setText(dist+" m");
+        calTextView.setText(cal+" kcal");
 
         if(targetSteps==0)
         {
             targetSteps=10000;
         }
-        Log.d("stepsverifytarget", "target" + targetSteps);
+        //Log.d("stepsverifytarget", "target" + targetSteps);
         fractionGoal= (steps*100/targetSteps);
-        Log.d("stepsverifytarget", "fracao" + fractionGoal);
+        //Log.d("stepsverifytarget", "fracao" + fractionGoal);
         animatebar = ObjectAnimator.ofInt(homeProgressBar, "progress", 0,fractionGoal);
         animatebar.setDuration(2000);
         animatebar.start();
