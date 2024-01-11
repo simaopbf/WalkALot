@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             if(item.getItemId()==R.id.home){
-                replaceFragment(  HomeFragment.newInstance(mParam1,mParam2,mUserId));
+                replaceFragment(HomeFragment.newInstance(mParam1,mParam2,mUserId));
 
             } else if (item.getItemId()==R.id.statistics) {
                 replaceFragment(StatisticsFragment.newInstance(mParam1,mParam2,mUserId));

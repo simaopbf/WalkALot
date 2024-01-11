@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SettingsFragment"
-    android:background="@drawable/blue_dark_theme">
+    android:background="@drawable/black_orange">
 
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:text="User Settings"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -119,7 +119,7 @@
             android:layout_height="160dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="140dp"
-            android:background="#84b1f5" />
+            android:background="@color/orange" />
 
     </androidx.cardview.widget.CardView>
 
@@ -165,7 +165,7 @@
             android:layout_height="160dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="140dp"
-            android:background="#84b1f5"/>
+            android:background="@color/orange"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -208,7 +208,7 @@
             android:layout_height="160dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="140dp"
-            android:background="#84b1f5"
+            android:background="@color/orange"
             app:layout_constraintEnd_toEndOf="@+id/weightImageView"
             app:layout_constraintHorizontal_bias="0.517"
             app:layout_constraintStart_toStartOf="@+id/weightImageView"
@@ -223,7 +223,7 @@
         android:layout_height="60dp"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="15dp"
-        android:backgroundTint="#5394f5"
+        android:backgroundTint="@color/orange"
         android:text="Save"
         android:textColor="@color/white"
         android:textSize="25sp"

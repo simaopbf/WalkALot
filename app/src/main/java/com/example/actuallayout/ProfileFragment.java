@@ -77,6 +77,13 @@ public class ProfileFragment extends Fragment {
     Button save_btn1;
     DatabaseHelper dbHelper;
 
+    String [] stepsoptions;
+
+    String [] caloriessoptions;
+
+    String [] distanceoptions;
+
+    String [] timeoptions;
 
     public static ProfileFragment newInstance(String param1, String param2, long userId) {
         ProfileFragment fragment = new ProfileFragment();
@@ -127,13 +134,14 @@ public class ProfileFragment extends Fragment {
         calsGoal = view.findViewById(R.id.calsGoal);
         distGoal = view.findViewById(R.id.distGoal);
         timeGoal = view.findViewById(R.id.timeGoal);
-       // save_btn1 = view.findViewById(R.id.save_btn1);
+        // save_btn1 = view.findViewById(R.id.save_btn1);
 
-
+        stepsoptions = getResources().getStringArray(R.array.steps);
 
         stepGoal.setMinValue(0);
-        stepGoal.setMaxValue(200000);
+        stepGoal.setMaxValue(39);
         //stepGoal.setValue(10000);
+        stepGoal.setDisplayedValues(stepsoptions);
         SharedPreferences stepGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
         int savedStepGoal = stepGoalPreferences.getInt(STEPS_GOAL, 10000);
         stepGoal.setValue(savedStepGoal);
@@ -142,18 +150,21 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker stepGoal, int oldValue, int newValue) {
 
+                // Update the variable used for other purposes (if needed)
+
                 stepsInp = newValue;
-                STEPS_GOAL = String.valueOf(stepsInp);
+                STEPS_GOAL = String.valueOf(newValue);
                 SharedPreferences.Editor editor = stepGoalPreferences.edit();
                 editor.putInt(STEPS_GOAL, newValue);
                 editor.apply();
             }
         });
 
-
+        caloriessoptions = getResources().getStringArray(R.array.calories);
 
         calsGoal.setMinValue(0);
-        calsGoal.setMaxValue(20000);
+        calsGoal.setMaxValue(49);
+        calsGoal.setDisplayedValues(caloriessoptions);
         //calsGoal.setValue(500);
         SharedPreferences calGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
         int savedCalGoal = calGoalPreferences.getInt(CAL_GOAL, 500);
@@ -171,8 +182,11 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        distanceoptions= getResources().getStringArray(R.array.distance);
+
         distGoal.setMinValue(0);
-        distGoal.setMaxValue(200000);
+        distGoal.setMaxValue(19);
+        distGoal.setDisplayedValues(distanceoptions);
         //distGoal.setValue(7000);
         SharedPreferences distGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
         int savedDistGoal = distGoalPreferences.getInt(DIST_GOAL, 7000);
@@ -190,8 +204,11 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        timeoptions=getResources().getStringArray(R.array.time);
+
         timeGoal.setMinValue(0);
-        timeGoal.setMaxValue(1440);
+        timeGoal.setMaxValue(19);
+        timeGoal.setDisplayedValues(timeoptions);
         //timeGoal.setValue(7000);
         SharedPreferences timeGoalPreferences = requireContext().getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
         int savedTimeGoal = timeGoalPreferences.getInt(TIME_GOAL, 7000);
@@ -456,7 +473,7 @@ public class ProfileFragment extends Fragment {
 
 
             // Update the user settings in the database
-            long rowsAffected = dbHelper.updateProfile(mUserId,stepGoal.getValue(), calsGoal.getValue(), timeGoal.getValue(), distGoal.getValue());
+            long rowsAffected = dbHelper.updateProfile(mUserId,(stepGoal.getValue()+1)*500, (calsGoal.getValue()+1)*10, (timeGoal.getValue()+1)*15, (distGoal.getValue()+1)*1000);
 
             if (rowsAffected > 0) {
                 // Settings updated successfully

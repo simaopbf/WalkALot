@@ -201,6 +201,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (getReadableDatabase().rawQuery("SELECT steps, cal, dist, time, date FROM Data GROUP BY date", null));
     }
 
+    public int getStepsForUserAndDate(long userId, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int steps = 10; // Default value if no match is found
+
+        try {
+            String query = "SELECT steps FROM Data WHERE user_id = ? AND date = ?";
+            String[] selectionArgs = {String.valueOf(userId), date};
+
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+
+
+            if (cursor != null && cursor.moveToFirst()) {
+                steps = cursor.getInt(cursor.getColumnIndex("steps"));
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "getStepsForUserAndDate: Exception", e);
+        }
+
+        return steps;
+    }
+    public int targetValue(long userId, String Value) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int objective_value=-1;
+        Log.d("targetValue", "targetValue:"+Value);
+
+        try {
+            String query = "SELECT " + Value + " FROM users WHERE id = ?";
+            String[] selectionArgs = {String.valueOf(userId)};
+            Log.d("targetValue", "targetValue:"+Value);
+
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+            if (cursor != null && cursor.moveToFirst()) {
+                objective_value = cursor.getInt(cursor.getColumnIndex(Value));
+                Log.d("targetValue", "targetValue:"+objective_value);
+            }
+        } catch (Exception e) {
+            Log.e("targetValue", "targetValue: Exception", e);
+        }
+        return objective_value;
+    }
+
 
 
 

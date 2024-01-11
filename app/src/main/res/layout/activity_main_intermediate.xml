@@ -1,42 +1,392 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-
-    <Button
-        android:id="@+id/buttonConnect"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Connect"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/layout">
 
-    <Button
-        android:id="@+id/buttonMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Homepage"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/welcome"
+            android:text="Welcome to WalkALot!"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cardExplanation"
+            />
 
-    <TextView
-        android:id="@+id/lblStatus"
-        android:layout_width="154dp"
-        android:layout_height="105dp"
-        android:gravity="center"
-        android:text="Let's do this"
-        android:textColor="@color/white"
-        android:textSize="10dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cardExplanation"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="0dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/orange"
+            app:cardMaxElevation="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toTopOf="@id/step0"
+            app:layout_constraintTop_toBottomOf="@+id/welcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/explanation"
+                android:text="A step counter app that helps you track your steps throughout the day"
+                android:textSize="21sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:layout_marginTop="0dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonConnect" />
+                />
+            <!--
+            app:layout_constraintBottom_toTopOf="@+id/step0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcome"/>  -->
+        </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/bluetoothLogo"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:paddingStart="20dp"
+            android:src="@drawable/bluetooth"
+            app:layout_constraintTop_toBottomOf="@+id/cardExplanation"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <!-- android:clickable="true"
+    android:onClick="onImageClick"-->
+
+        <TextView
+            android:id="@+id/step0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:paddingStart="5dp"
+            android:paddingEnd="15dp"
+            android:text="Vital Jacket Connection: This device will allow counting your steps. Click on the button bellow to connect!"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/cardExplanation"
+            app:layout_constraintStart_toEndOf="@+id/bluetoothLogo"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barExplanation"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            app:cardBackgroundColor="#8a8a8a"
+            app:cardMaxElevation="12dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toTopOf="@id/endExplanation"
+            app:layout_constraintTop_toBottomOf="@+id/buttonConnect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <LinearLayout
+                android:id="@+id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/step1"
+                    android:text="By clicking on the button in the end of the page you will have access to a bottom navigation menu with 5 options:"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:padding="15dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonConnect"
+                    app:layout_constraintBottom_toTopOf="@+id/linear2"/>
+
+                <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:rowCount="5"
+                    android:columnCount="2"
+                    tools:context=".MainActivity">
+
+
+                    <ImageView
+                        android:id="@+id/settings_icon"
+                        android:layout_height="60dp"
+                        android:layout_width="60dp"
+                        android:layout_margin="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingTop="5dp"
+                        android:src="@drawable/baseline_settings_24"
+
+                        />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="300dp"
+                        android:id="@+id/step2"
+                        android:text="Settings: Fill in your characteristics."
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="0dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="15dp"
+                        android:layout_gravity="end"
+                        />
+
+                    <ImageView
+                        android:id="@+id/profile_icon"
+                        android:layout_height="60dp"
+                        android:layout_width="60dp"
+                        android:layout_margin="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingTop="5dp"
+                        android:src="@drawable/baseline_person_24"
+
+                        />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="300dp"
+                        android:id="@+id/step3"
+                        android:text="Profile: Set goals to accomplish."
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="0dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="15dp"
+                        android:layout_gravity="end"
+                        />
+
+                    <ImageView
+                        android:id="@+id/home_icon"
+                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_margin="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/baseline_home_24"
+
+                        />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="300dp"
+                        android:id="@+id/step4"
+                        android:text="Home: Check your daily step progress, walked distance and calories burnt."
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="0dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="15dp"
+                        android:layout_gravity="end"
+                        />
+
+                    <ImageView
+                        android:id="@+id/statistics_icon"
+                        android:layout_height="60dp"
+                        android:layout_width="60dp"
+                        android:layout_margin="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingTop="15dp"
+                        android:src="@drawable/stats_logo"
+
+                        />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="300dp"
+                        android:id="@+id/step5"
+                        android:text="Statistics: See a graphical representation of the steps taken."
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="0dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="15dp"
+                        android:layout_gravity="end"
+                        />
+
+                    <ImageView
+                        android:id="@+id/calendar_icon"
+                        android:layout_height="60dp"
+                        android:layout_width="60dp"
+                        android:layout_margin="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/baseline_calendar_today_24"
+
+                        />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="300dp"
+                        android:id="@+id/step6"
+                        android:text="Calendar: Consult information of your steps from any day."
+                        android:textSize="20sp"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:paddingTop="0dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="15dp"
+                        android:layout_gravity="end"
+                        />
+
+                </GridLayout>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/endExplanation"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardMaxElevation="12dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toTopOf="@id/step8"
+            app:layout_constraintTop_toBottomOf="@+id/barExplanation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/step7"
+                android:text="You'll receive notifications as you approach and achieve your goals, and a small surprise will pop up upon reaching them."
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <!--app:layout_constraintBottom_toTopOf="@+id/step8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step6"-->
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/step8"
+            android:text="Are you up for the challenge?"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonMain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/endExplanation"/>
+
+        <Button
+            android:id="@+id/buttonConnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/barExplanation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step0" />
+
+        <Button
+            android:id="@+id/buttonMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:gravity="center_horizontal"
+            android:text="Let's WalkALot!"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+        <TextView
+            android:id="@+id/lblStatus"
+            android:layout_width="154dp"
+            android:layout_height="105dp"
+            android:gravity="center"
+            android:text="Let's do this"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonMain" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

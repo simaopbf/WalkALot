@@ -10,5 +10,9 @@
     <color name="red">#FF0000</color>
     <color name="blue">#3256a8</color>
     <color name="mint">#60e6c2</color>
+    <color name="grey_500">#FF9E9E9E</color>
     <color name="lavender">#8692f7</color>
+    <color name="orange">#eb8f34</color>
+    <color name="medium_orange">#ffc26e</color>
+    <color name="light_orange">#fae8cf</color>
 </resources>

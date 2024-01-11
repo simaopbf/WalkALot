@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:text="Daily Goals"
         android:textColor="#e8faf8"
         android:textSize="30sp"
@@ -88,7 +88,7 @@
             android:layout_height="110dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
-            android:background="#e8faf8" />
+            android:background="@color/light_orange" />
 
     </androidx.cardview.widget.CardView>
 
@@ -117,7 +117,7 @@
             android:layout_height="110dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
-            android:background="#e8faf8" />
+            android:background="@color/light_orange" />
 
     </androidx.cardview.widget.CardView>
 
@@ -147,7 +147,7 @@
             android:layout_height="110dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
-            android:background="#e8faf8" />
+            android:background="@color/light_orange" />
 
     </androidx.cardview.widget.CardView>
 
@@ -178,7 +178,7 @@
             android:layout_height="110dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="80dp"
-            android:background="#e8faf8" />
+            android:background="@color/light_orange" />
 
     </androidx.cardview.widget.CardView>
 
@@ -189,7 +189,7 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="#e8faf8"
+        android:backgroundTint="@color/light_orange"
         android:text="Save"
         android:textColor="@color/black"
         android:textStyle="bold"

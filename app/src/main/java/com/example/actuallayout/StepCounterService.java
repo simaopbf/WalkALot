@@ -1,6 +1,7 @@
 package com.example.actuallayout;
 
 import static android.content.Intent.getIntent;
+import static androidx.core.content.ContentProviderCompat.requireContext;
 import static com.example.actuallayout.MyContentProvider.TABLE_NAME;
 import static com.example.actuallayout.ProfileFragment.CAL_GOAL;
 import static com.example.actuallayout.ProfileFragment.DIST_GOAL;
@@ -149,6 +150,23 @@ public class StepCounterService extends Service {
         }
     };
 
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //Log.d(TAG, "StepCounterService onStartCommand");
+        // Retrieve userId from the intent
+        long userId = intent.getLongExtra("userId", -1);
+        //Log.d(TAG, "Received userId in onStartCommand: " + userId);
+        suserId= userId;
+        Log.d("StepCounterService", "user em cima: " + suserId);
+        initPreferencesAndGoals(suserId);
+
+        // Remove data retrieval logic from onStartCommand
+        // Data retrieval and calculations are now handled by accDataObserver
+        return START_STICKY;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -160,6 +178,7 @@ public class StepCounterService extends Service {
                 true,
                 accDataObserver
         );
+
         /*// Retrieve userId from intent (if it was started as a service)
         Intent intent = getIntent();  // This line is only valid in an activity, not a service
         long userId = -1;
@@ -171,21 +190,9 @@ public class StepCounterService extends Service {
         }
 */
         // Initialize preferences and goals
-        initPreferencesAndGoals();
-    }
+        //initPreferencesAndGoals(suserId);
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        //Log.d(TAG, "StepCounterService onStartCommand");
-        // Retrieve userId from the intent
-        long userId = intent.getLongExtra("userId", -1);
-        //Log.d(TAG, "Received userId in onStartCommand: " + userId);
-        suserId= userId;
-        // Remove data retrieval logic from onStartCommand
-        // Data retrieval and calculations are now handled by accDataObserver
-        return START_STICKY;
     }
-
     private int retrieveXIntValueFromDatabase() {
         // Replace with your logic to retrieve X value as integer from the database
         // Example: return dbHelper.retrieveXIntValue();
@@ -240,14 +247,21 @@ public class StepCounterService extends Service {
         return (double) intValue; // Simple conversion for demonstration purposes
     }
     //PREFERÊNCIAAAAAAAAAS
-    private void initPreferencesAndGoals() {
+    private void initPreferencesAndGoals(long suserId) {
         // Configs
         configPreferences = getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
 
         // Goals
         SharedPreferences goalsPreferences = getSharedPreferences(GOALS_PREFS, MODE_PRIVATE);
 
-        Steps = goalsPreferences.getInt(STEPS_GOAL, 10000);
+
+
+        int goalSteps= helper.targetValue(suserId,"stepGoal");
+
+        Log.d("StepCounterService", "user: " + suserId);
+        Log.d("StepCounterService", "NGLKS: " + goalSteps);
+
+        Steps = goalsPreferences.getInt(STEPS_GOAL, goalSteps);
         Calories = goalsPreferences.getInt(CAL_GOAL, 685);
         Distance = goalsPreferences.getInt(DIST_GOAL, 8);
         Time = goalsPreferences.getInt(TIME_GOAL, 1);
