@@ -144,14 +144,15 @@ public class HomeFragment extends Fragment {
                 // String date = cursor.getString(cursor.getColumnIndex("date"));
                 steps = databaseHelper.getStepsForUserAndDate(mUserId,currentTime.toString());
                 dist = databaseHelper.getDistForUserAndDate(mUserId,currentTime.toString());
-                cal = databaseHelper.getCalForUserAndDate(mUserId,currentTime.toString());
+
+
+
+
+                cal =(int) ((834/24)*3.80*dist/4000);
 
                 Log.d("distverify", "dist " + dist);
                 Log.d("distverify", "cal " + cal);
 
-                //Log.d("stepsverify", "muserid " + mUserId);
-                //Log.d("stepsverify", "date " + currentTime.toString());
-                //Log.d("stepsverify", "steps " + steps);
                 break;
 
             } while (cursor.moveToNext());
@@ -168,16 +169,12 @@ public class HomeFragment extends Fragment {
         {
             targetSteps=10000;
         }
-        //Log.d("stepsverifytarget", "target" + targetSteps);
         fractionGoal= (steps*100/targetSteps);
-        //Log.d("stepsverifytarget", "fracao" + fractionGoal);
         animatebar = ObjectAnimator.ofInt(homeProgressBar, "progress", 0,fractionGoal);
         animatebar.setDuration(2000);
         animatebar.start();
 
-        //Confetti animation
         konfettiView = view.findViewById(R.id.konfettiView);
-        //HomeFragmentLayout = view.findViewById(R.id.HomeFragmentLayout);
 
         EmitterConfig emitterConfig = new Emitter(5L, TimeUnit.SECONDS).perSecond(50);
         Party party =
@@ -189,7 +186,6 @@ public class HomeFragment extends Fragment {
                         .sizes(new Size(12, 5f, 0.2f))
                         .position(0.0, 0.0, 1.0, 0.0)
                         .build();
-        // konfettiView.setOnClickListener(view -> konfettiView.start(party));
 
 
         if (fractionGoal == homeProgressBar.getMax()) {
@@ -199,14 +195,6 @@ public class HomeFragment extends Fragment {
 
 
         return view;
-    }
-
-    private boolean isCurrentDate(String date) {
-        DateFormat dateFormat = new SimpleDateFormat("HH/mm/ss", Locale.UK);
-        String currentDate = dateFormat.format(Calendar.getInstance().getTime());
-
-        // Compare the date strings
-        return date.equals(currentDate);
     }
 
 }

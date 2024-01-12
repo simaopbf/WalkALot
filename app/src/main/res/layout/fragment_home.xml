@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:id="@+id/HomeFragmentLayout"
     tools:context=".CalendarFragment"
     android:background="@color/black">
@@ -39,6 +40,8 @@
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="4dp"
         android:text="Steps"
+        android:fontFamily="@font/akira"
+
         android:textColor="@color/white"
         android:textSize="30sp" />
 

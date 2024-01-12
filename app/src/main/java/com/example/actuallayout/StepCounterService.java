@@ -65,6 +65,10 @@ public class StepCounterService extends Service {
     private int walkingCounter = 0;
     private int status = 0;
 
+    int calrun = 0;
+    int distrun = 0;
+    int steprun = 0;
+
     private SQLiteManager sqLiteManager;
     // Constants for magnitude delta thresholds
     private static final double STEP_THRESHOLD_LOW = 30;
@@ -92,6 +96,7 @@ public class StepCounterService extends Service {
 
     private DatabaseHelper helper; //dataHelper as our bridge to the database
     private Date currentTime;
+    private Date timeobj;
 
     // Config
 
@@ -112,9 +117,9 @@ public class StepCounterService extends Service {
     private long userId;
     private long suserId;
 
-    // Binder given to clients
     private final IBinder binder = new LocalBinder();
     private BioLib.DataACC dataACC;
+
 
     // Class used for the client Binder.
     public class LocalBinder extends Binder {
@@ -126,7 +131,7 @@ public class StepCounterService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-
+        initPreferencesAndGoals(suserId);
         return binder;
     }
 
@@ -134,7 +139,6 @@ public class StepCounterService extends Service {
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            //Log.d(TAG, "ACCDataTable changed. Uri: " + uri);
             // Trigger your calculations here
             // Retrieve the latest row from ACCDataTable and perform calculations
             int xIntValue = retrieveXIntValueFromDatabase();
@@ -144,7 +148,6 @@ public class StepCounterService extends Service {
             double xValue = convertToDouble(xIntValue);
             double yValue = convertToDouble(yIntValue);
             double zValue = convertToDouble(zIntValue);
-            //Log.d(TAG, "Retrieved values from ACCDataTable. X: " + xValue + ", Y: " + yValue + ", Z: " + zValue);
 
             calculateData(xValue, yValue, zValue, suserId);
         }
@@ -154,13 +157,11 @@ public class StepCounterService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Log.d(TAG, "StepCounterService onStartCommand");
         // Retrieve userId from the intent
-        long userId = intent.getLongExtra("userId", -1);
-        //Log.d(TAG, "Received userId in onStartCommand: " + userId);
+       long userId = intent.getLongExtra("userId", -1);
         suserId= userId;
-        Log.d("StepCounterService", "user em cima: " + suserId);
         initPreferencesAndGoals(suserId);
+
 
         // Remove data retrieval logic from onStartCommand
         // Data retrieval and calculations are now handled by accDataObserver
@@ -179,18 +180,6 @@ public class StepCounterService extends Service {
                 accDataObserver
         );
 
-        /*// Retrieve userId from intent (if it was started as a service)
-        Intent intent = getIntent();  // This line is only valid in an activity, not a service
-        long userId = -1;
-        if (intent != null) {
-            userId = intent.getLongExtra("userId", -1);
-            Log.d(TAG, "Received userId in onCreate: " + userId);
-        } else {
-            Log.e(TAG, "Intent is null in onCreate");
-        }
-*/
-        // Initialize preferences and goals
-        //initPreferencesAndGoals(suserId);
 
     }
     private int retrieveXIntValueFromDatabase() {
@@ -211,7 +200,7 @@ public class StepCounterService extends Service {
 
     private int retrieveYIntValueFromDatabase() {
         // Replace with your logic to retrieve Y value as integer from the database
-        // Example: return dbHelper.retrieveYIntValue();
+
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT y_axis FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 1", null);        int yValue = 0;
 
@@ -227,7 +216,6 @@ public class StepCounterService extends Service {
 
     private int retrieveZIntValueFromDatabase() {
         // Replace with your logic to retrieve Z value as integer from the database
-        // Example: return dbHelper.retrieveZIntValue();
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT z_axis FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 1", null);        int zValue = 0;
 
@@ -248,6 +236,7 @@ public class StepCounterService extends Service {
     }
     //PREFERÊNCIAAAAAAAAAS
     private void initPreferencesAndGoals(long suserId) {
+        DatabaseHelper helper = new DatabaseHelper(this);
         // Configs
         configPreferences = getSharedPreferences(CONFIG_PREFS, MODE_PRIVATE);
 
@@ -274,8 +263,17 @@ public class StepCounterService extends Service {
         distCount = 0;
         timeCount = 0;
 
-        DatabaseHelper helper = new DatabaseHelper(this);
-        Cursor dbData = helper.getAll();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        timeobj = calendar.getTime();
+        Log.d("Currenttime", "NGLKS: " + timeobj.toString());
+
+
+
+        Cursor dbData = helper.Datatable(suserId,timeobj.toString());
 
         ArrayList<Integer> steps = new ArrayList<>();
         ArrayList<Double> cal = new ArrayList<>();
@@ -292,39 +290,54 @@ public class StepCounterService extends Service {
 
             for (int i = 0; i < steps.size(); i++) {
                 stepCount = stepCount + steps.get(i);
+
                 kcalTotais = kcalTotais + cal.get(i);
                 distCount = distCount + dist.get(i);
                 timeCount = timeCount + time.get(i);
             }
         }
 
-        //helper.close();
+
     }
     private void calculateData(double xValue, double yValue, double zValue, long userId) {
-        stepCounter(xValue,yValue,zValue);
-        calculateKcal();
         int muser = (int) userId;
-        //Log.d(TAG, "calculateData userId: " + userId);
+        stepCounter(xValue,yValue,zValue);
+        calculateKcal(currentTime.toString());
+
 
         // Insert data into the database
         addDataToDatabase(stepCount, kcalTotais, distCount, timeCount, currentTime.toString(), muser);
 
         sendDataToActivity(stepCount, kcalTotais, distCount,timeCount, status);
 
+
+        DatabaseHelper helper = new DatabaseHelper(this);
+        int goalsteps = helper.targetValue(suserId,"stepGoal");
+        Log.d("goals", "goals: " + goalsteps);
+        int goalcals = helper.targetValue(suserId,"calGoal");
+        Log.d("goals", "goals: " + goalcals);
+        int goaldist = helper.targetValue(suserId,"distGoal");
+        Log.d("goals", "goals: " + goaldist);
+
         createNotificationChannel();
 
-        if(stepCount == Steps)
+
+
+        if(stepCount == goalsteps && steprun==0)
         {
             goalsNotification("Steps",R.drawable.steps);
+            steprun=1;
         }
-        else if (Math.round(kcalTotais) == Calories)
+        if (Math.round(kcalTotais) == goalcals && calrun==0)
         {
             goalsNotification("Calories",R.drawable.kcal);
+            calrun=1;
 
         }
-        else if (distCount == Distance)
+        if (distCount == goaldist && distrun==0)
         {
             goalsNotification("Distance",R.drawable.distance);
+            distrun=1;
         }
 
 
@@ -358,7 +371,6 @@ public class StepCounterService extends Service {
 
         // Check if a row with the same user_id and date already exists
         Cursor cursor = db.rawQuery("SELECT * FROM Data WHERE user_id = ? AND date = ?", new String[]{String.valueOf(userId), date});
-        //Log.d(TAG, "addDataToDatabase userId: " + userId);
 
         ContentValues values = new ContentValues();
         values.put("user_id", userId);
@@ -453,7 +465,7 @@ public class StepCounterService extends Service {
         currentTime = calendar.getTime();
 
 
-        if (MagnitudeDelta >= 30 && MagnitudeDelta <= 90)
+        if (MagnitudeDelta >= 15 && MagnitudeDelta <= 90)
         {
             stepCount++;
             distance();
@@ -483,17 +495,65 @@ public class StepCounterService extends Service {
         }
     }
 
-    private void calculateKcal() {
-        Weight = configPreferences.getInt(WEIGHT,70);
-        final int fs = 10;
-        final int adjustment = fs * 60;
-        kcalTotais = ((0.001064 * agregadoMagnitudes + 0.087512 * Weight - 5.500229)/fs);
-        // Equation for every min so its adjusted
+    private void calculateKcal(String date) {
+        if (configPreferences != null) {
+            Weight = configPreferences.getInt(WEIGHT,70);
+        } else {
+
+            Weight = 70; // or any other appropriate default value
+
+        }
+        DatabaseHelper helper = new DatabaseHelper(this);
+
+        // Check if a row with the same user_id and date already exists
+       int steps = helper.getStepsForUserAndDate(suserId,date);
+       int dist= helper.getDistsForUserAndDate(suserId,date);
+
+       int height= helper.targetValue(suserId,"height");
+       int weight= helper.targetValue(suserId,"weight");
+       int age= helper.targetValue(suserId,"age");
+       String gender= helper.targetGender(suserId);
+       double bmr;
+       if(gender=="Male")
+       {
+           bmr= (13.75*weight) + (5*height) - (6.76*age) + 66;
+       } else if (gender=="Female") {
+           bmr= (9.56*weight) + (1.85*height) -(4.68*age)+ 655;
+       }
+       else{
+           bmr= 834;
+
+       }
+       double T;
+       T=dist/4000;
+
+        kcalTotais = (bmr/24)*3.80*T;
     }
 
     private void distance(){
-        Height = configPreferences.getInt(HEIGHT,165);
-        Gender = configPreferences.getString(GENDER,"Male");
+
+        if (configPreferences != null) {
+            Height = configPreferences.getInt(HEIGHT, 165);
+            // Rest of your code
+        } else {
+            // Handle the case where configPreferences is null, perhaps by providing a default value or logging an error
+            // For example:
+            Log.e("YourTag", "configPreferences is null");
+            Height = 165; // or any other appropriate default value
+
+        }
+        if (configPreferences != null) {
+            Gender = configPreferences.getString(GENDER, "Male");
+            // Rest of your code
+        } else {
+            // Handle the case where configPreferences is null, perhaps by providing a default value or logging an error
+            // For example:
+            String defaultValue = "Male"; // or any other appropriate default value
+            Log.e("YourTag", "configPreferences is null");
+            // You might want to set a default value or take appropriate action
+            // For example:
+            Gender = defaultValue;
+        }
 
         if(Gender.equals("Male"))
         {

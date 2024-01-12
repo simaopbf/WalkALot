@@ -14,25 +14,10 @@ import java.util.Calendar;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.util.Log;
-import android.graphics.Color;
-import android.widget.CalendarView;
-import android.widget.Toast;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
-import androidx.appcompat.app.AppCompatActivity;
+
 
 public class CalendarFragment extends Fragment {
 
@@ -51,10 +36,11 @@ public class CalendarFragment extends Fragment {
 
     private ProgressBar calendarProgressBar;
     private ObjectAnimator animatebar;
-    private TextView stepsTextView;
+
     private int savedStepsValue = 0;
     private int stepGoal;
     private int progress;
+    private StatisticsFragment statisticsFragment;
 
 
     public static CalendarFragment newInstance(String param1, String param2, long userId) {
@@ -74,11 +60,6 @@ public class CalendarFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
             mUserId = getArguments().getLong(ARG_USER_ID);
         } else {
-            // Handle the case where user ID is not provided
-            // You may want to show an error message or navigate to a different screen
-
-            // mUserId = mUserId;
-
         }
     }
 
@@ -108,6 +89,7 @@ public class CalendarFragment extends Fragment {
         fetchDataForSelectedDate(currentDate);
         animateProgressBar(progress);
 
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
@@ -115,9 +97,6 @@ public class CalendarFragment extends Fragment {
                 selectedCalendar.set(year, month, day);
                 String selectedDate = formatDate(selectedCalendar);
                 textViewSelectedDate.setText(selectedDate);
-
-                //Log.d("CalendarFragment", selectedDate);
-
                 fetchDataForSelectedDate(selectedDate);
 
                 animateProgressBar(progress);
@@ -128,14 +107,17 @@ public class CalendarFragment extends Fragment {
 
         calendarProgressBar = view.findViewById(R.id.calendar_progress_bar);
 
-        // Start your animation
-
         animateProgressBar(progress);
+        statisticsFragment = StatisticsFragment.newInstance(mParam1,mParam2,mUserId);
+        Calendar currentDateCalendar = Calendar.getInstance();
+        currentDateCalendar.set(currentYear, currentMonth, currentDay);
+
+
 
         return view;
     }
     private String formatDate(Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d 00:00:00 'GMT' yyyy", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd 00:00:00 'GMT'ZZZZZ yyyy", Locale.UK);
         return sdf.format(calendar.getTime());
     }
 
@@ -147,23 +129,17 @@ public class CalendarFragment extends Fragment {
     private void fetchDataForSelectedDate(String selectedDate) {
         // Assuming you have a DatabaseHelper instance named dbHelper
         DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
-
-
-        // Use a Cursor to retrieve data from the database
         String query = "SELECT SUM(steps) AS steps, SUM(cal) AS cal, SUM(dist) AS dist FROM Data WHERE date = ? AND user_id = ?";
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, new String[]{selectedDate, String.valueOf(mUserId)});
-
-        Log.d("CalendarFragment", "Formatted Date: " + selectedDate);
-
 
         try {
             // Check if the cursor is not null and move to the first row
             if (cursor != null && cursor.moveToFirst()) {
                 // Retrieve values from the cursor
                 int steps = cursor.getInt(cursor.getColumnIndexOrThrow("steps"));
-                double calories = cursor.getDouble(cursor.getColumnIndexOrThrow("cal"));
-                int distance = cursor.getInt(cursor.getColumnIndexOrThrow("dist"));
 
+                int distance = cursor.getInt(cursor.getColumnIndexOrThrow("dist"));
+                int calories =(int) ((834/24)*3.80*distance/4000);
 
                 if (steps < stepGoal){
                     double progressFraction = (double) steps / stepGoal;

@@ -27,13 +27,13 @@
         android:id="@+id/genderCardView"
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginRight="27.5dp"
+        android:layout_gravity="top|center_horizontal"
         android:layout_marginLeft="27.5dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="27.5dp"
+        android:backgroundTint="@color/black"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
-        android:backgroundTint="@color/black"
-        android:layout_gravity="top|center_horizontal"
         app:layout_constraintVertical_bias="0.1">
 
 
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Female"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
 
             <!--
 
@@ -85,7 +85,7 @@
         android:id="@+id/heightCardView"
         android:layout_width="100dp"
         android:layout_height="330dp"
-        android:layout_marginTop="290dp"
+        android:layout_marginTop="260dp"
         android:layout_marginStart="27.5dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
@@ -127,7 +127,7 @@
         android:id="@+id/ageCardView"
         android:layout_width="100dp"
         android:layout_height="330dp"
-        android:layout_marginTop="290dp"
+        android:layout_marginTop="260dp"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
@@ -173,13 +173,13 @@
         android:id="@+id/weightCardView"
         android:layout_width="100dp"
         android:layout_height="330dp"
-        android:layout_marginTop="290dp"
-        android:layout_marginEnd="27.5dp"
+        android:layout_gravity="top|end"
         android:layout_marginStart="282.5dp"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginEnd="27.5dp"
         android:backgroundTint="@color/black"
-        android:layout_gravity="top|end">
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
 
         <ImageView
             android:id="@+id/weightImageView"
@@ -220,59 +220,15 @@
     <Button
         android:id="@+id/save_btn2"
         android:layout_width="130dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="200dp"
         android:backgroundTint="@color/orange"
         android:text="Save"
         android:textColor="@color/white"
         android:textSize="25sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
-    <!--
-    <EditText
-        android:id="@+id/heightPick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="380dp"
-        android:background="#ECEEE8"
-        android:hint="HEIGHT (CM)"
-        android:inputType="number"
-        android:textSize="25sp"
-        android:padding="10dp" />
--->
-
-
-    <!--
-         <EditText
-             android:id="@+id/ageEditText"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginLeft="170dp"
-             android:layout_marginTop="480dp"
-             android:background="#ECEEE8"
-             android:hint="AGE (YEARS)"
-             android:inputType="number"
-             android:textSize="25sp"
-             android:padding="10dp" />
-  -->
-
-
-    <!--
-        <EditText
-            android:id="@+id/weightEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="170dp"
-            android:layout_marginTop="580dp"
-            android:background="#ECEEE8"
-            android:inputType="number"
-            android:hint="WEIGHT (KG)"
-            android:textSize="25sp"
-            android:padding="10dp" />
-
-    -->
 
 
 </FrameLayout>

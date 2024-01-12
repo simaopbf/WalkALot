@@ -73,6 +73,8 @@ public class BluetoothService extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase mDatabase;
     private MainActivity mainActivity;
+    private BluetoothAdapter bluetoothAdapter;
+
     private static final int MY_BLUETOOTH_PERMISSION_REQUEST_CODE = 1;
 
     //Fui buscar
@@ -338,16 +340,11 @@ public class BluetoothService extends AppCompatActivity {
         lib = null;
     }
     boolean isBluetoothConnected() {
-        return isConn;  // Assuming isConn is a boolean variable that indicates the Bluetooth connection status
+        return isConn;
     }
 
     // Expose a method to get data
-    public static BioLib.DataACC getDataACC() {
 
-        Log.d(TAG, "MESSAGE_ACC_UPDATED - DataACC received: " + dataACC.X + ", " + dataACC.Y + ", " + dataACC.Z);
-
-        return dataACC;
-    }
 
 
     private void adddata() { // Add data to dataset

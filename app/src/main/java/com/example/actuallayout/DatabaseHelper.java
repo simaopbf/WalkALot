@@ -93,7 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insert(int steps, double cal, int dist, int time, String date) { //String hour, String energyE
         ContentValues cv = new ContentValues();
         // Create a new map of values, where column names are the keys
-        //cv.put("hour", hour);
+
         cv.put("steps", steps);
         cv.put("cal", cal);
         cv.put("dist", dist);
@@ -148,15 +148,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Insert the ACC data into the database
         long newRowId = db.insert("ACCDataTable", null, values);
 
-        // Close the database connection
-        // db.close();
+
         // Use the content resolver to insert data into the ACCDataTable
         Uri uri = MyContentProvider.CONTENT_URI;
         Uri insertedUri = context.getContentResolver().insert(uri, values);
 
         if (insertedUri != null) {
             // Data inserted successfully
-            //     Log.d(TAG, "Data inserted successfully. Uri: " + insertedUri);
         } else {
             // Failed to insert data
             Log.e(TAG, "Failed to insert data into ACCDataTable");
@@ -166,11 +164,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long getUserIdByUsername(String username) {
+
         SQLiteDatabase db = this.getReadableDatabase();
         long userId = -1;  // Default value if user is not found
 
         try {
-            Log.d("DatabaseHelper", "Querying user ID for username: " + username);
 
             String[] projection = { "id" };
             String selection = "username = ?";
@@ -192,7 +190,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // Log any exception that occurs
             Log.e("DatabaseHelper", "getUserIdByUsername: Exception", e);
         } finally {
-            //db.close();
+
         }
 
         return userId;
@@ -201,6 +199,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (getReadableDatabase().rawQuery("SELECT steps, cal, dist, time, date FROM Data GROUP BY date", null));
     }
 
+    public Cursor Datatable(long userId, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT steps, cal, dist, time FROM Data WHERE user_id = ? AND date = ?";
+            String[] selectionArgs = {String.valueOf(userId), date};
+            cursor = db.rawQuery(query, selectionArgs);
+
+
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error in Datatable: " + e.getMessage(), e);
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+
+            }
+        }
+
+        return cursor;
+    }
     public int getStepsForUserAndDate(long userId, String date) {
         SQLiteDatabase db = this.getReadableDatabase();
         int steps = 10; // Default value if no match is found
@@ -221,6 +239,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return steps;
     }
+    public int getDistsForUserAndDate(long userId, String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int dist = 10; // Default value if no match is found
+
+        try {
+            String query = "SELECT dist FROM Data WHERE user_id = ? AND date = ?";
+            String[] selectionArgs = {String.valueOf(userId), date};
+
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+
+
+            if (cursor != null && cursor.moveToFirst()) {
+                dist = cursor.getInt(cursor.getColumnIndex("dist"));
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "getStepsForUserAndDate: Exception", e);
+        }
+
+        return dist;
+    }
     public int targetValue(long userId, String Value) {
         SQLiteDatabase db = this.getReadableDatabase();
         int objective_value=-1;
@@ -234,6 +272,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(query, selectionArgs);
             if (cursor != null && cursor.moveToFirst()) {
                 objective_value = cursor.getInt(cursor.getColumnIndex(Value));
+                Log.d("targetValue", "targetValue:"+objective_value);
+            }
+        } catch (Exception e) {
+            Log.e("targetValue", "targetValue: Exception", e);
+        }
+        return objective_value;
+    }
+    public String targetGender(long userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String objective_value="Male";
+
+
+        try {
+            String query = "SELECT gender FROM users WHERE id = ?";
+            String[] selectionArgs = {String.valueOf(userId)};
+
+
+            Cursor cursor = db.rawQuery(query, selectionArgs);
+            if (cursor != null && cursor.moveToFirst()) {
+                objective_value = cursor.getString(cursor.getColumnIndex("gender"));
                 Log.d("targetValue", "targetValue:"+objective_value);
             }
         } catch (Exception e) {
@@ -287,5 +345,3 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 }
-
-

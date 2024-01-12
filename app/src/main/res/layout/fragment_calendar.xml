@@ -54,52 +54,59 @@
 
     <TextView
         android:id="@+id/textViewkms"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="345dp"
         android:layout_marginLeft="250dp"
-        android:textSize="30dp"
-        android:text="Distance"
+        android:layout_marginTop="345dp"
+
+        android:layout_marginRight="20dp"
         android:background="@color/black"
+        android:text="Distance"
         android:textColor="@color/white"
+        android:textSize="30dp"
 
         />
 
     <TextView
         android:id="@+id/textViewSelectedDatekms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="385dp"
+        android:layout_width="136dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="250dp"
-        android:textSize="30dp"
+        android:layout_marginTop="385dp"
+        android:layout_marginRight="20dp"
+
         android:background="@color/black"
         android:textColor="@color/grey_500"
+        android:textSize="30dp"
 
 
         />
 
     <TextView
         android:id="@+id/textViewkcal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="435dp"
         android:layout_marginLeft="250dp"
-        android:textSize="30dp"
-        android:text="Calories"
+        android:layout_marginRight="20dp"
+
+        android:layout_marginTop="435dp"
         android:background="@color/black"
+        android:text="Calories"
         android:textColor="@color/white"
+        android:textSize="30dp"
 
         />
 
     <TextView
         android:id="@+id/textViewSelectedDateKcal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="475dp"
+        android:layout_width="139dp"
+        android:layout_height="64dp"
         android:layout_marginLeft="250dp"
-        android:textSize="30dp"
+        android:layout_marginTop="475dp"
+        android:layout_marginRight="20dp"
         android:background="@color/black"
         android:textColor="@color/grey_500"
+        android:textSize="30dp"
 
 
         />
